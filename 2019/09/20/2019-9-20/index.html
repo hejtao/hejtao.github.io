@@ -289,6 +289,8 @@
 <li><a href="#biao-zai-wen-jian-xi-tong-zhong-de-biao-shi">表在文件系统中的表示</a></li>
 </ul>
 </li>
+<li><a href="#wen-jian-xi-tong-dui-shu-ju-ku-de-ying-xiang">文件系统对数据库的影响</a></li>
+<li><a href="#mysql-xi-tong-shu-ju-ku-jian-jie">MySQL系统数据库简介</a></li>
 </ul>
 </li>
 </ul>
@@ -675,8 +677,29 @@ NULL值标识：1
 <h4><span id="biao-zai-wen-jian-xi-tong-zhong-de-biao-shi">表在文件系统中的表示</span><a href="#biao-zai-wen-jian-xi-tong-zhong-de-biao-shi" class="header-anchor">#</a></h4>
 <p>每个表包含两部分信息：</p>
 <ul>
-<li>表结构的定义</li>
-<li>表中的数据</li>
+<li>表结构的定义
+用<code>表名.frm</code>文件来描述表结构</li>
+<li>表中的数据
+InnoDB: 数据存在独立表空间(file-per-table tablespace)中，即 <code>test.ibd</code> 文件
+MyISAM: <code>表名.MYD</code>表示表的数据文件、<code>表名.MYI</code>表示表的索引文件</li>
+</ul>
+<h3><span id="wen-jian-xi-tong-dui-shu-ju-ku-de-ying-xiang">文件系统对数据库的影响</span><a href="#wen-jian-xi-tong-dui-shu-ju-ku-de-ying-xiang" class="header-anchor">#</a></h3>
+<ul>
+<li>数据库名和表名不得超过文件系统所允许的最大长度</li>
+<li>特殊字符
+MySQL会把数据库名和表名中除<strong>数字</strong>和<strong>拉丁字母</strong>外的所有字符在文件名里都映射成 @+编码值的形式，如<code>test?.frm</code> $ \rightarrow $ <code>test@003f.frm</code></li>
+<li>文件大小受文件系统限制</li>
+</ul>
+<h3><span id="mysql-xi-tong-shu-ju-ku-jian-jie">MySQL系统数据库简介</span><a href="#mysql-xi-tong-shu-ju-ku-jian-jie" class="header-anchor">#</a></h3>
+<ul>
+<li>mysql
+存储了MySQL的账户和权限信息，一些存储过程、事件的定义信息，一些运行过程中产生的日志信息、以及时区信息等</li>
+<li>information_schema
+这个数据库保存着MySQL服务器维护的所有其他数据库的信息，比如表、视图、触发器、列、索引等</li>
+<li>performance_schema
+这个数据库里主要保存MySQL服务器运行过程中的一些状态信息，包括统计最近执行的语句，执行时间，内存使用情况等</li>
+<li>sys
+这个数据库主要是通过视图的形式把information_schema和performance_schema结合起来</li>
 </ul>
 
   </section>
@@ -792,7 +815,10 @@ NULL值标识：1
 
 
 
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -809,8 +835,5 @@ NULL值标识：1
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
+<!-- hexo-inject:end --></body>
 </html>
