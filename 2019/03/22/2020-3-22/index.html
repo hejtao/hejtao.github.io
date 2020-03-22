@@ -164,17 +164,16 @@
   </header>
 
   <section class="post">
-    <p><meta name="referrer" content="no-referrer"></p>
+    <meta name="referrer" content="no-referrer">
 <div class="toc">
-
 <!-- toc -->
 <ul>
 <li><a href="#qi-dong-ting-zhi-he-chong-qi">启动、停止和重启</a></li>
 </ul>
 <!-- tocstop -->
 </div>
-
-<h4><span id="qi-dong-ting-zhi-he-chong-qi">启动、停止和重启</span><a href="#qi-dong-ting-zhi-he-chong-qi" class="header-anchor">#</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">nginx</span><br><span class="line">systemctl start nginx.service</span><br><span class="line">systemctl start nginx</span><br><span class="line">ps aux | grep nginx</span><br><span class="line"></span><br><span class="line">ngxin -s quit</span><br><span class="line">nginx -s stop</span><br><span class="line">killall nginx</span><br><span class="line">systemctl stop nginx.service</span><br><span class="line">systemctl stop nginx</span><br><span class="line"></span><br><span class="line">nginx -s reload</span><br><span class="line">systemctl restart nginx.service</span><br><span class="line">systemctl restart nginx</span><br><span class="line"></span><br><span class="line">netstat -tlnp</span><br></pre></td></tr></table></figure>
+<h4><span id="qi-dong-ting-zhi-he-chong-qi">启动、停止和重启</span><a href="#qi-dong-ting-zhi-he-chong-qi" class="header-anchor">#</a></h4>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">nginx</span><br><span class="line">systemctl start nginx.service</span><br><span class="line">systemctl start nginx</span><br><span class="line">ps aux | grep nginx</span><br><span class="line"></span><br><span class="line">ngxin -s quit</span><br><span class="line">nginx -s stop</span><br><span class="line">killall nginx</span><br><span class="line">systemctl stop nginx.service</span><br><span class="line">systemctl stop nginx</span><br><span class="line"></span><br><span class="line">nginx -s reload</span><br><span class="line">systemctl restart nginx.service</span><br><span class="line">systemctl restart nginx</span><br><span class="line"></span><br><span class="line">netstat -tlnp</span><br></pre></td></tr></table></figure>
   </section>
 
 </article>
@@ -189,10 +188,15 @@
                 <p class="excerpt">
                 
                 
-
-MIT Distributed System Course: Lecture 2Remote Procedure Call (RPC)
-目标：建立编程友好的客户端/服务器通信
-RPC消息图：   客户端 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 服务器    请求—-&amp;gt;      
+MIT Distributed System Course: Lecture 2
+Remote Procedure Call (RPC)
+目标：
+建立编程友好的客户端/服务器通信
+RPC消息图：
+客户端      服务器
+请求---&amp;gt;
+                &amp;lt;---响应
+软件
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2019-03-24T16:00:00.000Z" class="post-list__meta--date date">2019-03-25</time> &#8226; <span class="post-list__meta--tags tags">
@@ -209,8 +213,7 @@ RPC消息图：   客户端 &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; 服务器  
                 <p class="excerpt">
                 
                 
-
-这篇博客的原创来自Go的官方博客，其中提供了丰富的关于Go的并发的相关资料。本文仅仅是对 Rob Pike 的演讲 Go Concurrency Patterns 和 Sameer Ajmani 的续集  Advanced Go Concurrency Patterns 的学习，相关内容的视频和
+这篇博客的原创来自Go的官方博客，其中提供了丰富的关于Go的并发的相关资料。本文仅仅是对 Rob Pike 的演讲 Go Concurrency Patterns 和 Sameer Ajmani 的续集  Advanced Go Concurrency Patterns 的学习，相关内容的视频和p
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2019-02-09T16:00:00.000Z" class="post-list__meta--date date">2019-02-10</time> &#8226; <span class="post-list__meta--tags tags">
