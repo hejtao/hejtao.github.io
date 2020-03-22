@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hejtao.netlify.com/"/>
-  <updated>2020-03-22T23:27:37.381Z</updated>
+  <updated>2020-03-22T23:29:31.064Z</updated>
   <id>https://hejtao.netlify.com/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Nginx Notes</title>
+    <link href="https://hejtao.netlify.com/2020/03/22/2020-3-22/"/>
+    <id>https://hejtao.netlify.com/2020/03/22/2020-3-22/</id>
+    <published>2020-03-21T16:00:00.000Z</published>
+    <updated>2020-03-22T23:29:31.064Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><meta name="referrer" content="no-referrer"><div class="toc"><!-- toc --><ul><li><a href="#qi-dong-ting-zhi-he-chong-qi">启动、停止和重启</a></li></ul><!-- tocstop --></div><h4><span id="qi-dong-ting-zhi-he-chong-qi">启动、停止和重启</span><a href="#qi-dong-ting-zhi-he-chong-qi" class="header-anchor">#</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">nginx</span><br><span class="line">systemctl start nginx.service</span><br><span class="line">systemctl start nginx</span><br><span class="line">ps aux | grep nginx</span><br><span class="line"></span><br><span class="line">ngxin -s quit</span><br><span class="line">nginx -s stop</span><br><span class="line">killall nginx</span><br><span class="line">systemctl stop nginx.service</span><br><span class="line">systemctl stop nginx</span><br><span class="line"></span><br><span class="line">nginx -s reload</span><br><span class="line">systemctl restart nginx.service</span><br><span class="line">systemctl restart nginx</span><br><span class="line"></span><br><span class="line">netstat -tlnp</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
+      
+    
+    </summary>
+    
+    
+      <category term="nginx" scheme="https://hejtao.netlify.com/tags/nginx/"/>
+    
+  </entry>
   
   <entry>
     <title>Flutter Notes</title>
@@ -180,29 +203,6 @@
       <category term="RPC" scheme="https://hejtao.netlify.com/tags/RPC/"/>
     
       <category term="并发" scheme="https://hejtao.netlify.com/tags/%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Nginx Notes</title>
-    <link href="https://hejtao.netlify.com/2019/03/22/2020-3-22/"/>
-    <id>https://hejtao.netlify.com/2019/03/22/2020-3-22/</id>
-    <published>2019-03-21T16:00:00.000Z</published>
-    <updated>2020-03-22T23:27:39.352Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><meta name="referrer" content="no-referrer"><div class="toc"><!-- toc --><ul><li><a href="#qi-dong-ting-zhi-he-chong-qi">启动、停止和重启</a></li></ul><!-- tocstop --></div><h4><span id="qi-dong-ting-zhi-he-chong-qi">启动、停止和重启</span><a href="#qi-dong-ting-zhi-he-chong-qi" class="header-anchor">#</a></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">nginx</span><br><span class="line">systemctl start nginx.service</span><br><span class="line">systemctl start nginx</span><br><span class="line">ps aux | grep nginx</span><br><span class="line"></span><br><span class="line">ngxin -s quit</span><br><span class="line">nginx -s stop</span><br><span class="line">killall nginx</span><br><span class="line">systemctl stop nginx.service</span><br><span class="line">systemctl stop nginx</span><br><span class="line"></span><br><span class="line">nginx -s reload</span><br><span class="line">systemctl restart nginx.service</span><br><span class="line">systemctl restart nginx</span><br><span class="line"></span><br><span class="line">netstat -tlnp</span><br></pre></td></tr></table></figure>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
-      
-    
-    </summary>
-    
-    
-      <category term="nginx" scheme="https://hejtao.netlify.com/tags/nginx/"/>
     
   </entry>
   
