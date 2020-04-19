@@ -188,6 +188,7 @@
 <h4><span id="pai-xu">排序</span><a href="#pai-xu" class="header-anchor">#</a></h4>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> book <span class="keyword">WHERE</span> library_id = <span class="number">257</span> <span class="keyword">AND</span> (title REGEXP <span class="string">"我"</span> <span class="keyword">OR</span> author REGEXP <span class="string">"我"</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">LOCATE</span>(<span class="string">"我"</span>, <span class="keyword">CONCAT</span>(title, author)), <span class="keyword">LENGTH</span>(title), <span class="keyword">LENGTH</span>(author);</span><br></pre></td></tr></table></figure>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">IN</span> (<span class="number">3</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">7</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">field</span>(<span class="keyword">id</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">7</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span></span><br><span class="line">( <span class="keyword">SELECT</span> isbn13, cn_title, <span class="keyword">count</span>(*) total <span class="keyword">FROM</span> book_info <span class="keyword">WHERE</span> isbn13 != <span class="string">''</span> <span class="keyword">AND</span> <span class="keyword">source</span> <span class="keyword">IN</span> (<span class="string">'yidi'</span>, <span class="string">'guotu'</span>, <span class="string">'douban'</span>, <span class="string">'dangdang'</span>) <span class="keyword">GROUP</span> <span class="keyword">BY</span> isbn13, cn_title ) t1</span><br><span class="line"><span class="keyword">WHERE</span> total &gt; <span class="number">1</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> total <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
 
   </section>
 
@@ -348,10 +349,7 @@ MapReduce执行概述#
 
 
 
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -368,5 +366,8 @@ MapReduce执行概述#
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<!-- hexo-inject:end -->
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
 </html>
