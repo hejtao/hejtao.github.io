@@ -164,97 +164,125 @@
   </header>
 
   <section class="post">
-    <p><meta name="referrer" content="no-referrer"></p>
+    <meta name="referrer" content="no-referrer">
 <div class="toc">
-
 <!-- toc -->
 <ul>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#galois-field">Galois Field</a></li>
-<li><a href="#galois-field-arithmetic">Galois Field Arithmetic</a><ul>
+<li><a href="#galois-field-arithmetic">Galois Field Arithmetic</a>
+<ul>
 <li><a href="#addition-and-subtraction">Addition and Subtraction</a></li>
 <li><a href="#multiplication-and-division">Multiplication and Division</a></li>
 </ul>
 </li>
-<li><a href="#rs-code">RS Code</a><ul>
+<li><a href="#rs-code">RS Code</a>
+<ul>
 <li><a href="#coding-matrix-method">Coding Matrix Method</a></li>
 <li><a href="#generator-polynomial-method">Generator Polynomial Method</a></li>
 </ul>
 </li>
-<li><a href="#rs-code-in-distributed-storage-systems">RS Code in Distributed Storage Systems</a><ul>
-<li><a href="#5-1-rotated-reed-solomon-code">5.1 Rotated Reed-Solomon code</a><ul>
-<li><a href="#local-reconstruction-code-lrc">Local Reconstruction Code (LRC)</a></li>
+<li><a href="#rs-code-in-distributed-storage-systems">RS Code in Distributed Storage Systems</a>
+<ul>
+<li><a href="#5-1-rotated-reed-solomon-code">5.1 Rotated Reed-Solomon code</a></li>
 </ul>
-</li>
+<ul>
+<li><a href="#local-reconstruction-code-lrc">Local Reconstruction Code (LRC)</a></li>
 </ul>
 </li>
 <li><a href="#references">References</a></li>
 </ul>
 <!-- tocstop -->
 </div>
-
-<h3><span id="introduction">Introduction</span><a href="#introduction" class="header-anchor">#</a></h3><p>Reed-Solomon (RS) code is an error-correcting code first proposed by Reed and Solomon in 1960, which is the most frequently applied digital error correction code around the word. The applications include data storage(hard drives, CD/DVD/Blue Ray), data transmission and common commercial activities(bar codes, QR codes) .<br>RS code has the advantage of high capability of correcting  random or burst errors since it encodes  groups of bits instead of one bit at a time. Redundant datas are generated  so that the original data can be reconstructed with part of the stored or received data loss.  People often back up important files which can be regarded as kind of  data loss protection with redundant data. However, backup is just a copy of the original datas while the redundant data generated in the RS code is a  fusion of the all the original data parts, which is more efficient for storage and error correction.<br>In this article, I have run through the procedure of the RS code and hope it is usefull for you to understand what is going on with this erasure code. Its application in the distributed strorage system are briefly introduced at the end. Part of implementations in pure Go are also provided whose source files can be found on the <a href="https://github.com/klauspost/reedsolomon" target="_blank" rel="noopener">Githup website</a> . </p>
-<h3><span id="galois-field">Galois Field</span><a href="#galois-field" class="header-anchor">#</a></h3><p>The finite field is also called Galois field which has finite elements  and the property that arithmetic operations on field elements always have a result in the field. In the sequel, we illustrate two kind of representations of the finite elements and its arithmetic operations.</p>
+<h3><span id="introduction">Introduction</span><a href="#introduction" class="header-anchor">#</a></h3>
+<p>Reed-Solomon (RS) code is an error-correcting code first proposed by Reed and Solomon in 1960, which is the most frequently applied digital error correction code around the word. The applications include data storage(hard drives, CD/DVD/Blue Ray), data transmission and common commercial activities(bar codes, QR codes) .
+RS code has the advantage of high capability of correcting  random or burst errors since it encodes  groups of bits instead of one bit at a time. Redundant datas are generated  so that the original data can be reconstructed with part of the stored or received data loss.  People often back up important files which can be regarded as kind of  data loss protection with redundant data. However, backup is just a copy of the original datas while the redundant data generated in the RS code is a  fusion of the all the original data parts, which is more efficient for storage and error correction.
+In this article, I have run through the procedure of the RS code and hope it is usefull for you to understand what is going on with this erasure code. Its application in the distributed strorage system are briefly introduced at the end. Part of implementations in pure Go are also provided whose source files can be found on the <a href="https://github.com/klauspost/reedsolomon" target="_blank" rel="noopener">Githup website</a> .</p>
+<h3><span id="galois-field">Galois Field</span><a href="#galois-field" class="header-anchor">#</a></h3>
+<p>The finite field is also called Galois field which has finite elements  and the property that arithmetic operations on field elements always have a result in the field. In the sequel, we illustrate two kind of representations of the finite elements and its arithmetic operations.</p>
 <blockquote>
 <p><strong>Proposition 1.</strong> For any prime $ p $ and any natual number$ r $ there exists a finite field with $ p^{r} $ elements and vice versa.</p>
 </blockquote>
-<p>With the proposition 1, the Galois Field is denoted as $ GF(p^{r}) $. In fact, the nature of RS encoding is mapping $ k $ elments of $ GF(2^{r}) $ into another $ n $ elements of $ GF(2^{r}) $ and $k+2\leq n\leq 2^{r} $. This Galois fields can be represented with the help of $ \mathbf{Z}<em>{2}[x] $, the set of polynomials with coefficients in the field of two elements $ \mathbf{Z}</em>{2} $, namely the polynomial representation as</p>
-<script type="math/tex; mode=display">0,1,x,x+1,x^{2},..,x^{r-1}+x^{r-2}+...+1 \tag{1}</script><p>This representation  can also be seen as a $r$-bit digit or binary vector.</p>
+<p>With the proposition 1, the Galois Field is denoted as $ GF(p^{r}) $. In fact, the nature of RS encoding is mapping $ k $ elments of $ GF(2^{r}) $ into another $ n $ elements of $ GF(2^{r}) $ and $k+2\leq n\leq 2^{r} $. This Galois fields can be represented with the help of $ \mathbf{Z}<em>{2}[x] $, the set of polynomials with coefficients in the field of two elements $ \mathbf{Z}</em>{2} $, namely the polynomial representation as
+$$0,1,x,x+1,x<sup>{2},..,x</sup>{r-1}+x^{r-2}+...+1 \tag{1}$$
+This representation  can also be seen as a $r$-bit digit or binary vector.</p>
 <blockquote>
-<p><strong>Proposition 2.</strong> $ GF(q) $ has cyclic the multiplicative group $ {\alpha, \alpha^{2},…,\alpha^{q-1}=1}$, where $ \alpha $ is the primitive element.</p>
+<p><strong>Proposition 2.</strong> $ GF(q) $ has cyclic the multiplicative group $ {\alpha, \alpha<sup>{2},...,\alpha</sup>{q-1}=1}$, where $ \alpha $ is the primitive element.</p>
 </blockquote>
-<p>Thus, $ GF(2^{r}) $ has the exponential representation as </p>
-<script type="math/tex; mode=display">0, 1(=\alpha^{255}), \alpha, \alpha^{2},..., \alpha^{2^{r}-2} \tag{2}</script><p>which is a better choice for the ‘$ \times $’ and ‘$ / $’  operation. Even a binary matrix can be used to  represente the elements. For example, we can establish a bijection between the vector representation and matrix representation over $ GF(2^{4}) $ as follows</p>
+<p>Thus, $ GF(2^{r}) $ has the exponential representation as
+$$0, 1(=\alpha^{255}), \alpha, \alpha^{2},..., \alpha<sup>{2</sup>{r}-2} \tag{2}$$
+which is a better choice for the '$ \times $' and '$ / $'  operation. Even a binary matrix can be used to  represente the elements. For example, we can establish a bijection between the vector representation and matrix representation over $ GF(2^{4}) $ as follows</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-ea01dad7bef4b4f4.JPG?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="Matrix representation"></p>
 <p>where the first column is the vector representation and the columns satisfy $column(i)=2\times column(i-1)$. This matrix representation transforms arithmetic over $ GF(2^{4}) $ into arithmetic over $ GF(2) $ which only has XOR, AND operations.</p>
-<h3><span id="galois-field-arithmetic">Galois Field Arithmetic</span><a href="#galois-field-arithmetic" class="header-anchor">#</a></h3><p>In this section, we discuss  arithmetic in $ GF(2^{8}) $, whose element corresponds a byte data.</p>
-<h4><span id="addition-and-subtraction">Addition and Subtraction</span><a href="#addition-and-subtraction" class="header-anchor">#</a></h4><p>Addition and subtraction are operated under the polynomial representation (also a byte in $ GF(2^{8}) $) and both are equivalent to XOR operation<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">galAdd</span>(<span class="params">a, b <span class="keyword">byte</span></span>) <span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> a ^ b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">galSub</span>(<span class="params">a, b <span class="keyword">byte</span></span>) <span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> a ^ b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4><span id="multiplication-and-division">Multiplication and Division</span><a href="#multiplication-and-division" class="header-anchor">#</a></h4><p>The multiplication is operated with the exponential representation $(2)$, before that we should establish a bijection (injection and surjection) between the two representations. Suppose </p>
-<script type="math/tex; mode=display">\alpha^{i}   ->  2^{i}</script><p>where $0\leq i \leq 2^{8}-2=254$. According to proposition 2, $\forall j\geq 255,\alpha^{j}=\alpha^{j-255}$.</p>
+<h3><span id="galois-field-arithmetic">Galois Field Arithmetic</span><a href="#galois-field-arithmetic" class="header-anchor">#</a></h3>
+<p>In this section, we discuss  arithmetic in $ GF(2^{8}) $, whose element corresponds a byte data.</p>
+<h4><span id="addition-and-subtraction">Addition and Subtraction</span><a href="#addition-and-subtraction" class="header-anchor">#</a></h4>
+<p>Addition and subtraction are operated under the polynomial representation (also a byte in $ GF(2^{8}) $) and both are equivalent to XOR operation</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">galAdd</span>(<span class="params">a, b <span class="keyword">byte</span></span>) <span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> a ^ b</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">galSub</span>(<span class="params">a, b <span class="keyword">byte</span></span>) <span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> a ^ b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="multiplication-and-division">Multiplication and Division</span><a href="#multiplication-and-division" class="header-anchor">#</a></h4>
+<p>The multiplication is operated with the exponential representation $(2)$, before that we should establish a bijection (injection and surjection) between the two representations. Suppose
+$$\alpha^{i}   -&gt;  2^{i}$$
+where $0\leq i \leq 2^{8}-2=254$. According to proposition 2, $\forall j\geq 255,\alpha<sup>{j}=\alpha</sup>{j-255}$.</p>
 <blockquote>
-<p><strong>Proposition 3.</strong>$ GF(2^{8}) $ has the irreducible polynomial $ f(x)=x^{8}+x^{4}+x^{3}+x^{2}+1 $ which has no factors of smaller polynomials.</p>
+<p><strong>Proposition 3.</strong>$ GF(2^{8}) $ has the irreducible polynomial $ f(x)=x<sup>{8}+x</sup>{4}+x<sup>{3}+x</sup>{2}+1 $ which has no factors of smaller polynomials.</p>
 </blockquote>
-<p>The irreducible polynomial is necessary to establish the bijection since some $2^{i}$ term are no longer in  $GF(2^{8})$. Let $ f(\alpha) =0$, we have <script type="math/tex">\alpha^{8}=\alpha^{4}+\alpha^{3}+\alpha^{2}+1=2^{4}+2^{3}+2^{2}+1=00011101</script><br>or <strong>0x1d</strong> . For convenience, we record the bijection with a table, namely called exponent table, whose indexs is the exponents of elements in exponential representation and value is elements in byte representation.<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> expTable = [<span class="number">255</span>]<span class="keyword">byte</span>&#123;<span class="number">0x1</span>, <span class="number">0x2</span>, <span class="number">0x4</span>, <span class="number">0x8</span>, <span class="number">0x10</span>, <span class="number">0x20</span>, <span class="number">0x40</span>, <span class="number">0x80</span>, <span class="number">0x1d</span>, <span class="number">0x3a</span>, ..., <span class="number">0x8e</span>&#125;</span><br></pre></td></tr></table></figure></p>
-<p>Use logTable[expTable[$i$]]=$i$, the logarithmic table is generated,<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> logTable = []<span class="keyword">byte</span>&#123;</span><br><span class="line">	<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">25</span>, <span class="number">2</span>, <span class="number">50</span>, <span class="number">26</span>, <span class="number">198</span>,</span><br><span class="line">	...</span><br><span class="line">	<span class="number">116</span>, <span class="number">214</span>, <span class="number">244</span>, <span class="number">234</span>, <span class="number">168</span>, <span class="number">80</span>, <span class="number">88</span>, <span class="number">175</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>With these tables, the $\times$ and $/$ functions in $GF(2^8)$ are easily defined,<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">galMultiply</span>(<span class="params">a, b <span class="keyword">byte</span></span>) <span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> a == <span class="number">0</span> || b == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	logA := <span class="keyword">int</span>(logTable[a])</span><br><span class="line">	logB := <span class="keyword">int</span>(logTable[b])</span><br><span class="line"></span><br><span class="line">	sum := logA+logB</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> sum&gt;<span class="number">254</span> &#123;</span><br><span class="line">        sum -= <span class="number">255</span></span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> expTable[sum]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">galDivide</span>(<span class="params">a, b <span class="keyword">byte</span></span>) <span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> a == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> b == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">"Argument 'divisor' is 0"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	logA := <span class="keyword">int</span>(logTable[a])</span><br><span class="line">	logB := <span class="keyword">int</span>(logTable[b])</span><br><span class="line">	logResult := logA - logB</span><br><span class="line">	<span class="keyword">if</span> logResult &lt; <span class="number">0</span> &#123;</span><br><span class="line">		logResult += <span class="number">255</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> expTable[logResult]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>The irreducible polynomial is necessary to establish the bijection since some $2^{i}$ term are no longer in  $GF(2^{8})$. Let $ f(\alpha) =0$, we have $$\alpha<sup>{8}=\alpha</sup>{4}+\alpha<sup>{3}+\alpha</sup>{2}+1=2<sup>{4}+2</sup>{3}+2^{2}+1=00011101$$
+or <strong>0x1d</strong> . For convenience, we record the bijection with a table, namely called exponent table, whose indexs is the exponents of elements in exponential representation and value is elements in byte representation.</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> expTable = [<span class="number">255</span>]<span class="keyword">byte</span>&#123;<span class="number">0x1</span>, <span class="number">0x2</span>, <span class="number">0x4</span>, <span class="number">0x8</span>, <span class="number">0x10</span>, <span class="number">0x20</span>, <span class="number">0x40</span>, <span class="number">0x80</span>, <span class="number">0x1d</span>, <span class="number">0x3a</span>, ..., <span class="number">0x8e</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>Use logTable[expTable[$i$]]=$i$, the logarithmic table is generated,</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> logTable = []<span class="keyword">byte</span>&#123;</span><br><span class="line">	<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">25</span>, <span class="number">2</span>, <span class="number">50</span>, <span class="number">26</span>, <span class="number">198</span>,</span><br><span class="line">	...</span><br><span class="line">	<span class="number">116</span>, <span class="number">214</span>, <span class="number">244</span>, <span class="number">234</span>, <span class="number">168</span>, <span class="number">80</span>, <span class="number">88</span>, <span class="number">175</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>With these tables, the $\times$ and $/$ functions in $GF(2^8)$ are easily defined,</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">galMultiply</span>(<span class="params">a, b <span class="keyword">byte</span></span>) <span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> a == <span class="number">0</span> || b == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	logA := <span class="keyword">int</span>(logTable[a])</span><br><span class="line">	logB := <span class="keyword">int</span>(logTable[b])</span><br><span class="line"></span><br><span class="line">	sum := logA+logB</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> sum&gt;<span class="number">254</span> &#123;</span><br><span class="line">        sum -= <span class="number">255</span></span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> expTable[sum]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">galDivide</span>(<span class="params">a, b <span class="keyword">byte</span></span>) <span class="title">byte</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> a == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> b == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">"Argument 'divisor' is 0"</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	logA := <span class="keyword">int</span>(logTable[a])</span><br><span class="line">	logB := <span class="keyword">int</span>(logTable[b])</span><br><span class="line">	logResult := logA - logB</span><br><span class="line">	<span class="keyword">if</span> logResult &lt; <span class="number">0</span> &#123;</span><br><span class="line">		logResult += <span class="number">255</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> expTable[logResult]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Based on the result above, the power and inverse functions can be further obtained. In fact, the method to establish the bijection is not unique. The original paper of Reed and Solomon in 1960 provides another method  with finite difference equation which has better computability.</p>
-<h3><span id="rs-code">RS Code</span><a href="#rs-code" class="header-anchor">#</a></h3><h4><span id="coding-matrix-method">Coding Matrix Method</span><a href="#coding-matrix-method" class="header-anchor">#</a></h4><p><strong>1.</strong> Orignal approach:<br>For arbitrary $ k $  8-bit symbols,$ m<em>{0}$,  $m</em>{1}$,  $…$,  $m_{k-1} $, we have the message polynomial</p>
-<script type="math/tex; mode=display">m(x)=m_{0}+m_{1}x+...+m_{k-1}x^{k-1},</script><p>with this $ m(x) $, $ 2^{8} $ codewords, i.e. $ m(0)$,$m(1)$,$…$,  $m(\alpha^{r-2}) $ are obtained and the  the encoded messages, which will be transmitted or stored, are $ n $ of the codewords (professionally called stripe).  Using linear algebra, the stripe are denoted collectively as follows</p>
-<script type="math/tex; mode=display">
+<h3><span id="rs-code">RS Code</span><a href="#rs-code" class="header-anchor">#</a></h3>
+<h4><span id="coding-matrix-method">Coding Matrix Method</span><a href="#coding-matrix-method" class="header-anchor">#</a></h4>
+<p><strong>1.</strong> Orignal approach:
+For arbitrary $ k $  8-bit symbols,$ m_{0}$,  $m_{1}$,  $...$,  $m_{k-1} $, we have the message polynomial
+$$m(x)=m_{0}+m_{1}x+...+m_{k-1}x^{k-1},$$
+with this $ m(x) $, $ 2^{8} $ codewords, i.e. $ m(0)$,$m(1)$,$...$,  $m(\alpha^{r-2}) $ are obtained and the  the encoded messages, which will be transmitted or stored, are $ n $ of the codewords (professionally called stripe).  Using linear algebra, the stripe are denoted collectively as follows
+$$
 \begin{bmatrix}
-m(\alpha_{1})\\
-m(\alpha_{2})\\
-...\\
+m(\alpha_{1})\
+m(\alpha_{2})\
+...\
 m(\alpha_{n})
 \end{bmatrix} =
-  \begin{bmatrix}
-   1 & \alpha_{1} & ... & \alpha_{1}^{k-1} \\
-   1 & \alpha_{2} & ...&\alpha_{2}^{k-1} \\
-   ... & ... & ...&... \\
-   1 & \alpha_{n} & ...&\alpha_{n}^{k-1}
-  \end{bmatrix} \begin{bmatrix}
-m_{0}\\
-m_{1}\\
-...\\
+\begin{bmatrix}
+1 &amp; \alpha_{1} &amp; ... &amp; \alpha_{1}^{k-1} \
+1 &amp; \alpha_{2} &amp; ...&amp;\alpha_{2}^{k-1} \
+... &amp; ... &amp; ...&amp;... \
+1 &amp; \alpha_{n} &amp; ...&amp;\alpha_{n}^{k-1}
+\end{bmatrix} \begin{bmatrix}
+m_{0}\
+m_{1}\
+...\
 m_{k-1}
-\end{bmatrix}\tag{3}</script><p>Note that  we only discuss one byte a shard (the messages are splited into multiple shards for encoding) here, in practice  one input shard contains thousands of bytes, in this case the output shard contains same size of byte as input shard and the vectors in $(3)$ becomes matrice. </p>
+\end{bmatrix}\tag{3}
+$$
+Note that  we only discuss one byte a shard (the messages are splited into multiple shards for encoding) here, in practice  one input shard contains thousands of bytes, in this case the output shard contains same size of byte as input shard and the vectors in $(3)$ becomes matrice.</p>
 <blockquote>
 <p><strong>Coding procedure :</strong> <br>1.Split the whole message into same size data shards;  <br>2. Build the  Vandermonde matrix (coding matrix); <br>3. Multiplies the coding matrix by data shards to produce code shards.</p>
 </blockquote>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> (<span class="params">r reedSolomon</span>) <span class="title">Split</span>(<span class="params">data []<span class="keyword">byte</span></span>) (<span class="params">[][]<span class="keyword">byte</span>, error</span>)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(data) == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, ErrShortData</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Calculate number of bytes per data shard.</span></span><br><span class="line">	perShard := (<span class="built_in">len</span>(data) + r.DataShards - <span class="number">1</span>) / r.DataShards</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">cap</span>(data) &gt; <span class="built_in">len</span>(data) &#123;</span><br><span class="line">		data = data[:<span class="built_in">cap</span>(data)]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Only allocate memory if necessary</span></span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(data) &lt; (r.Shards * perShard) &#123;</span><br><span class="line">		<span class="comment">// Pad data to r.Shards*perShard.</span></span><br><span class="line">		padding := <span class="built_in">make</span>([]<span class="keyword">byte</span>, (r.Shards*perShard)-<span class="built_in">len</span>(data))</span><br><span class="line">		data = <span class="built_in">append</span>(data, padding...)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Split into equal-length shards.</span></span><br><span class="line">	dst := <span class="built_in">make</span>([][]<span class="keyword">byte</span>, r.Shards)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="keyword">range</span> dst &#123;</span><br><span class="line">		dst[i] = data[:perShard]</span><br><span class="line">		data = data[perShard:]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> dst, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">vandermonde</span>(<span class="params">rows, cols <span class="keyword">int</span></span>) (<span class="params">matrix, error</span>)</span> &#123;</span><br><span class="line">	result, err := newMatrix(rows, cols)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> r, row := <span class="keyword">range</span> result &#123;</span><br><span class="line">		<span class="keyword">for</span> c := <span class="keyword">range</span> row &#123;</span><br><span class="line">			result[r][c] = galExp(<span class="keyword">byte</span>(r), c)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Multiplies a subset of rows from a coding matrix by a full set of</span></span><br><span class="line"><span class="comment">// input shards to produce some output shards.</span></span><br><span class="line"><span class="comment">// 'matrixRows' is The rows from the matrix to use.</span></span><br><span class="line"><span class="comment">// 'inputs' An array of byte arrays, each of which is one input shard.</span></span><br><span class="line"><span class="comment">// The number of inputs used is determined by the length of each matrix row.</span></span><br><span class="line"><span class="comment">// outputs Byte arrays where the computed shards are stored.</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> (<span class="params">r reedSolomon</span>) <span class="title">codeSomeShards</span>(<span class="params">matrixRows, inputs, outputs [][]<span class="keyword">byte</span></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> c := <span class="number">0</span>; c &lt; r.DataShards; c++ &#123;</span><br><span class="line">		in := inputs[c]</span><br><span class="line">		<span class="keyword">for</span> iRow := <span class="number">0</span>; iRow &lt; outputCount; iRow++ &#123;</span><br><span class="line">			<span class="keyword">if</span> c == <span class="number">0</span> &#123;</span><br><span class="line">				galMulSlice(matrixRows[iRow][c], in, outputs[iRow], r.o.useSSSE3, r.o.useAVX2)</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				galMulSliceXor(matrixRows[iRow][c], in, outputs[iRow], r.o.useSSSE3, r.o.useAVX2)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Since any $ k $ rows of Vandermonde matrix are linearly independent, with arbitrary $ k $ correct code shards, the original $ k $  data shards can be reconstructed by multiplying the corresponding inverse matrix. However, in practice, we usually do not know which one is correct or corrupted for the $ n $ received codewords. In this case, the plurality of votes method is necessary and </p>
-<script type="math/tex; mode=display">
+<p>Since any $ k $ rows of Vandermonde matrix are linearly independent, with arbitrary $ k $ correct code shards, the original $ k $  data shards can be reconstructed by multiplying the corresponding inverse matrix. However, in practice, we usually do not know which one is correct or corrupted for the $ n $ received codewords. In this case, the plurality of votes method is necessary and
+$$
 \left(\begin{array}{c}
-n-s\\k
-\end{array} \right)>\left(\begin{array}{c}
-s+k-1\\k
-\end{array} \right)</script><p>or</p>
-<script type="math/tex; mode=display">
-s<\frac{n-k+1}{2}</script><p>where $s$ is number of unkown errors, therefore $ n=k+2s $ always satisfies the in-equation. Another approach is to use the Berlekamp-Welsh Algorithm  which avoids the heavy computation of votes: </p>
+n-s\k
+\end{array} \right)&gt;\left(\begin{array}{c}
+s+k-1\k
+\end{array} \right)
+$$
+or
+$$
+s&lt;\frac{n-k+1}{2}
+$$
+where $s$ is number of unkown errors, therefore $ n=k+2s $ always satisfies the in-equation. Another approach is to use the Berlekamp-Welsh Algorithm  which avoids the heavy computation of votes:</p>
 <blockquote>
-<p><strong>Berlekamp-Welsh decoder:</strong><br> 1. Send $m(0),m(1),…,m(n)$,  receive $m’(0),m’(1),…,m’(n)$, and most $s$ of  them such that $m(i)\neq m’(i)$；<br> 2.  $E(x)=x^{s}+b<em>{s-1}x^{s-1}+…+b</em>{0}$, $Q(x)=a<em>{k+s-1}x^{k+s-1}+a</em>{k+s-2}x^{k+s-2}+…+a_{0}$ <br> 3. Solve the coefficients of co$E(x)$,$Q(x)$ with $  Q(i)=m’(i)E(i)$ <br>4. Derive $m(x)=Q(x)/E(x)$.</p>
+<p><strong>Berlekamp-Welsh decoder:</strong><br> 1. Send $m(0),m(1),...,m(n)$,  receive $m'(0),m'(1),...,m'(n)$, and most $s$ of  them such that $m(i)\neq m'(i)$；<br> 2.  $E(x)=x<sup>{s}+b_{s-1}x</sup>{s-1}+...+b_{0}$, $Q(x)=a_{k+s-1}x<sup>{k+s-1}+a_{k+s-2}x</sup>{k+s-2}+...+a_{0}$ <br> 3. Solve the coefficients of co$E(x)$,$Q(x)$ with $  Q(i)=m'(i)E(i)$ <br>4. Derive $m(x)=Q(x)/E(x)$.</p>
 </blockquote>
-<p>And $\forall m(i)\neq m’(i)$,$E(i)=0$.<br> <strong>The implicite principle:</strong> $Q’(x)/E’(x)$ and $Q(x)/E(x)$  agree on at least $k+s$ points. $E’(x)$  and  $E(x)$ both have at most $s$ zero points. Elimilate $E’(x)$  and  $E(x)$,$Q’(x)/E’(x)$ and $Q(x)/E(x)$ are degree at least $k-1$ and agree on at least $k$ points, thus $Q’(x)/E’(x)=Q(x)/E(x)=m(x)$.<br><br><strong>2.</strong> Systematic coding matrix:</p>
+<p>And $\forall m(i)\neq m'(i)$,$E(i)=0$.
+<strong>The implicite principle:</strong> $Q'(x)/E'(x)$ and $Q(x)/E(x)$  agree on at least $k+s$ points. $E'(x)$  and  $E(x)$ both have at most $s$ zero points. Elimilate $E'(x)$  and  $E(x)$,$Q'(x)/E'(x)$ and $Q(x)/E(x)$ are degree at least $k-1$ and agree on at least $k$ points, thus $Q'(x)/E'(x)=Q(x)/E(x)=m(x)$.<br>
+<strong>2.</strong> Systematic coding matrix:</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-aceb4a25d416d295.JPG?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt=""><br></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-8b2f627ce05e386f.JPG?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt=""><br></p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-7404acc2dbc829e4.JPG?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt=""><br></p>
@@ -275,62 +303,84 @@ s<\frac{n-k+1}{2}</script><p>where $s$ is number of unkown errors, therefore $ n
 <li>Parity matrix is Cauchy matrix. Cauchy matrices are easier to invert than general matrices [8].</li>
 </ul>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">buildMatrixCauchy</span>(<span class="params">dataShards, totalShards <span class="keyword">int</span></span>) (<span class="params">matrix, error</span>)</span> &#123;</span><br><span class="line">	result, err := newMatrix(totalShards, dataShards)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> r, row := <span class="keyword">range</span> result &#123;</span><br><span class="line">		<span class="comment">// The top portion of the matrix is the identity</span></span><br><span class="line">		<span class="comment">// matrix, and the bottom is a transposed Cauchy matrix.</span></span><br><span class="line">		<span class="keyword">if</span> r &lt; dataShards &#123;</span><br><span class="line">			result[r][r] = <span class="number">1</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">for</span> c := <span class="keyword">range</span> row &#123;</span><br><span class="line">				result[r][c] = invTable[(<span class="keyword">byte</span>(r ^ c))]</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4><span id="generator-polynomial-method">Generator Polynomial Method</span><a href="#generator-polynomial-method" class="header-anchor">#</a></h4><p>Define the generator polynomial:</p>
-<script type="math/tex; mode=display">
-g(x)=(x-\alpha)(x-\alpha^{2})\dots(x-\alpha^{2s})</script><p>and the codeword polynomial can be directly computed as </p>
-<script type="math/tex; mode=display">c(x)=m(x)g(x)</script><p>For the systematic form, which is more often used in practice, we define</p>
-<script type="math/tex; mode=display">
-b(x)=x^{2s}m(x) \quad mod\quad g(x)</script><p>then the codeword polynomial becomes</p>
-<script type="math/tex; mode=display">
-c(x)=x^{2s}m(x)-b(x)</script><p>where $-b(x)$ is the parity  codeword polynomial. All the polynomial operation above is processed over $GF(2^8)$. It is also observed that the correction of received message can be checked  by testing its divisibility by g(x), and there is no need to decode for the systematic encoding if the answer is affirmative. Otherwise, we denote $r(x)=c(x)+e(x)$ and suppose there are $ v(\leq s) $ errors</p>
+<h4><span id="generator-polynomial-method">Generator Polynomial Method</span><a href="#generator-polynomial-method" class="header-anchor">#</a></h4>
+<p>Define the generator polynomial:</p>
+<p>$$
+g(x)=(x-\alpha)(x-\alpha<sup>{2})\dots(x-\alpha</sup>{2s})
+$$
+and the codeword polynomial can be directly computed as
+$$c(x)=m(x)g(x)$$
+For the systematic form, which is more often used in practice, we define
+$$
+b(x)=x^{2s}m(x) \quad mod\quad g(x)
+$$
+then the codeword polynomial becomes
+$$
+c(x)=x^{2s}m(x)-b(x)
+$$</p>
+<p>where $-b(x)$ is the parity  codeword polynomial. All the polynomial operation above is processed over $GF(2^8)$. It is also observed that the correction of received message can be checked  by testing its divisibility by g(x), and there is no need to decode for the systematic encoding if the answer is affirmative. Otherwise, we denote $r(x)=c(x)+e(x)$ and suppose there are $ v(\leq s) $ errors</p>
 <blockquote>
-<p><strong>Syndrome based decoder:</strong><br> 1.Calculate the $2s$ Syndromes: $S_{j}=r(\alpha^{j})=e(\alpha^{j})$ <br> 2. Solve </p>
-<p><script type="math/tex">\begin{bmatrix}
-   S_{1} & S_{2}& ... & S_{v} \\
-   S_{2} & S_{3} & ...&S_{v+1} \\
-   ... & ... & ...&... \\
-   S_{v} & S_{v+1} & ...&S_{2v-1}
-  \end{bmatrix} \begin{bmatrix}
-\Lambda_{v}\\
-\Lambda_{v-1}\\
-...\\
+<p><strong>Syndrome based decoder:</strong>
+1.Calculate the $2s$ Syndromes: $S_{j}=r(\alpha<sup>{j})=e(\alpha</sup>{j})$ <br> 2. Solve
+$$ \begin{bmatrix}
+S_{1} &amp; S_{2}&amp; ... &amp; S_{v} \
+S_{2} &amp; S_{3} &amp; ...&amp;S_{v+1} \
+... &amp; ... &amp; ...&amp;... \
+S_{v} &amp; S_{v+1} &amp; ...&amp;S_{2v-1}
+\end{bmatrix} \begin{bmatrix}
+\Lambda_{v}\
+\Lambda_{v-1}\
+...\
 \Lambda_{1}
 \end{bmatrix}=\begin{bmatrix}
- -S_{v} \\
--S_{v+1}\\
-...\\
+-S_{v} \
+-S_{v+1}\
+...\
 -S_{2v}\tag{4}
-\end{bmatrix}</script> and use <a href="https://en.wikipedia.org/wiki/Chien_search" target="_blank" rel="noopener">Chien search</a> solve $\Lambda(x)=\Lambda<em>{v}x^{v} +\Lambda</em>{v-1}x^{v-1}+…+1=0$ to derive the $v$ roots, denoted as,$x<em>{1},..,x</em>{v}$. <br> 3. Use <a href="https://en.wikipedia.org/wiki/Forney_algorithm" target="_blank" rel="noopener">Forney algorithm</a> to solve </p>
-<p><script type="math/tex">\begin{bmatrix}
-   x_{1}^{-1} & x_{2}^{-1}& ... & x_{v}^{-1} \\
-   x_{1}^{-2} & x_{2}^{-2} & ...&x_{v}^{-2} \\
-   ... & ... & ...&... \\
-  x_{1}^{-2s} & x_{2}^{-2s} & ...&x_{v}^{-2s}
-  \end{bmatrix} \begin{bmatrix}
-e_{i_{1}}\\
-e_{i_{2}}\\
-...\\
+\end{bmatrix} $$ and use <a href="https://en.wikipedia.org/wiki/Chien_search" target="_blank" rel="noopener">Chien search</a> solve $\Lambda(x)=\Lambda_{v}x^{v} +\Lambda_{v-1}x^{v-1}+...+1=0$ to derive the $v$ roots, denoted as,$x_{1},..,x_{v}$. <br> 3. Use <a href="https://en.wikipedia.org/wiki/Forney_algorithm" target="_blank" rel="noopener">Forney algorithm</a> to solve
+$$ \begin{bmatrix}
+x_{1}^{-1} &amp; x_{2}^{-1}&amp; ... &amp; x_{v}^{-1} \
+x_{1}^{-2} &amp; x_{2}^{-2} &amp; ...&amp;x_{v}^{-2} \
+... &amp; ... &amp; ...&amp;... \
+x_{1}^{-2s} &amp; x_{2}^{-2s} &amp; ...&amp;x_{v}^{-2s}
+\end{bmatrix} \begin{bmatrix}
+e_{i_{1}}\
+e_{i_{2}}\
+...\
 e_{i_{v}}
 \end{bmatrix}=\begin{bmatrix}
- S_{1} \\
-S_{2}\\
-...\\
+S_{1} \
+S_{2}\
+...\
 S_{2s}\tag{5}
-\end{bmatrix}</script>  <br>4. The index $i<em>{j}$ of $e</em>{i<em>{j}}$ are determined by looking up the  logarithmic table as earlier mentioned <br> 5. Compute $e(x)=\sum</em>{j=1}^{v}e<em>{i</em>{j}}x^{i_{j}}$ and $c(x) = r(x)-e(x)$.</p>
+\end{bmatrix} $$  <br>4. The index $i_{j}$ of $e_{i_{j}}$ are determined by looking up the  logarithmic table as earlier mentioned <br> 5. Compute $e(x)=\sum_{j=1}<sup>{v}e_{i_{j}}x</sup>{i_{j}}$ and $c(x) = r(x)-e(x)$.</p>
 </blockquote>
-<p>It is worth mentioning that all the syndromes are zeros if $r(x)=c(x)$,  this can be used to check if the received message is corrupted or if the message was completely constructed.  RS encoding is relatively straightforward for the generator approach, but decoding needs complicated algebraic computation, especially for the step 2. Because the real value of $v$ is unknown and the normal way has to use the trial value  untill the matrix in $(4)$ is nonsingular.  Other algebraic methods for the evaluation of this error location polynomial $\Lambda(x)$ include  <a href="https://en.wikipedia.org/wiki/Berlekamp%E2%80%93Massey_algorithm" target="_blank" rel="noopener">Berlekamp–Massey algorithm</a> and <a href="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm" target="_blank" rel="noopener">Extended Euclidean algorithm</a>.<br>This syndrome based decoder  can be implemented with different hardware unit such as matrix vector multiplication unit, remainder unit,  and performs <strong>hard-decision decoding</strong> up to $s$ errors. Hard-decision decoding decides the  bit according to the a threshold, where each bit is  definitely one or zero. While <strong>soft-decision decoding</strong>  requires additional reliability information to improve the decision, which has better coding gain for the white Guassian channel [2].</p>
-<h3><span id="rs-code-in-distributed-storage-systems">RS Code in Distributed Storage Systems</span><a href="#rs-code-in-distributed-storage-systems" class="header-anchor">#</a></h3><p>The RS code are stored in different disks in the distributed storage systems, and the performance arasure code in distributed storage systems involves  disk I/O and repair bandwidth overhead. </p>
-<h5><span id="5-1-rotated-reed-solomon-code">5.1 Rotated Reed-Solomon code</span><a href="#5-1-rotated-reed-solomon-code" class="header-anchor">#</a></h5><p>In the conventional RS code, all the parity blocds are encoded with data blocks in the same strip, while in the rotated reed-solomon code, parity blocks may be generated with different stripes as in the following figure,</p>
+<p>It is worth mentioning that all the syndromes are zeros if $r(x)=c(x)$,  this can be used to check if the received message is corrupted or if the message was completely constructed.  RS encoding is relatively straightforward for the generator approach, but decoding needs complicated algebraic computation, especially for the step 2. Because the real value of $v$ is unknown and the normal way has to use the trial value  untill the matrix in $(4)$ is nonsingular.  Other algebraic methods for the evaluation of this error location polynomial $\Lambda(x)$ include  <a href="https://en.wikipedia.org/wiki/Berlekamp%E2%80%93Massey_algorithm" target="_blank" rel="noopener">Berlekamp–Massey algorithm</a> and <a href="https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm" target="_blank" rel="noopener">Extended Euclidean algorithm</a>.
+This syndrome based decoder  can be implemented with different hardware unit such as matrix vector multiplication unit, remainder unit,  and performs <strong>hard-decision decoding</strong> up to $s$ errors. Hard-decision decoding decides the  bit according to the a threshold, where each bit is  definitely one or zero. While <strong>soft-decision decoding</strong>  requires additional reliability information to improve the decision, which has better coding gain for the white Guassian channel [2].</p>
+<h3><span id="rs-code-in-distributed-storage-systems">RS Code in Distributed Storage Systems</span><a href="#rs-code-in-distributed-storage-systems" class="header-anchor">#</a></h3>
+<p>The RS code are stored in different disks in the distributed storage systems, and the performance arasure code in distributed storage systems involves  disk I/O and repair bandwidth overhead.</p>
+<h5><span id="5-1-rotated-reed-solomon-code">5.1 Rotated Reed-Solomon code</span><a href="#5-1-rotated-reed-solomon-code" class="header-anchor">#</a></h5>
+<p>In the conventional RS code, all the parity blocds are encoded with data blocks in the same strip, while in the rotated reed-solomon code, parity blocks may be generated with different stripes as in the following figure,</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-1a81fb7850f88085.JPG?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="RRS code"></p>
 <p>when the disk 5 in the figure fails, this method reduceS 3 operations of reading the data blocks than the conventional RS code [5].</p>
-<h4><span id="local-reconstruction-code-lrc">Local Reconstruction Code (LRC)</span><a href="#local-reconstruction-code-lrc" class="header-anchor">#</a></h4><p>LRC introduces local parity codes which requires slightly more storage space than conventional RS code, but significantly reduce the number of participating data discs for encoding, thus it is beneficial to the reduction of bandwidth and disc I/O overhead.  The figure of pyramid code is shown as follows [6]</p>
+<h4><span id="local-reconstruction-code-lrc">Local Reconstruction Code (LRC)</span><a href="#local-reconstruction-code-lrc" class="header-anchor">#</a></h4>
+<p>LRC introduces local parity codes which requires slightly more storage space than conventional RS code, but significantly reduce the number of participating data discs for encoding, thus it is beneficial to the reduction of bandwidth and disc I/O overhead.  The figure of pyramid code is shown as follows [6]</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-eb3e80741654047b.JPG?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="Pyramid"></p>
-<p> However, repair of the global redundancy still needs to access all data discs, another LRC approach in  [7] further introduces parity code ($ S<em>{3} $ in the figure) for the global parity codes ($P</em>{1}$,$P<em>{2}$,$P</em>{3}$,$P<em>{4}$)  to avoid this undesirable situation. By choosing the coefficients of $c</em>{1}^{‘}$, $c<em>{2}^{‘}$, $c</em>{3}^{‘}$, $c<em>{4}^{‘}$ and $c</em>{5}^{‘}$, $c<em>{6}^{‘}$ properly, the parity code of  $ S</em>{3} $ can be calculated by the existing parity codes $ S<em>{1} $ and $ S</em>{2} $. Thus parity code $ S_{3} $ does not have to occupy additional storage.</p>
+<p>However, repair of the global redundancy still needs to access all data discs, another LRC approach in  [7] further introduces parity code ($ S_{3} $ in the figure) for the global parity codes ($P_{1}$,$P_{2}$,$P_{3}$,$P_{4}$)  to avoid this undesirable situation. By choosing the coefficients of $c_{1}^{'}$, $c_{2}^{'}$, $c_{3}^{'}$, $c_{4}^{'}$ and $c_{5}^{'}$, $c_{6}^{'}$ properly, the parity code of  $ S_{3} $ can be calculated by the existing parity codes $ S_{1} $ and $ S_{2} $. Thus parity code $ S_{3} $ does not have to occupy additional storage.</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-26576a62ea3ad8ca.JPG?imageMogr2/auto-orient/strip%7CimageView2/2/w/600" alt="HDFS-Xorbas"></p>
 <blockquote>
 <p><strong>Observation:</strong>  Copy is kind of LRC.</p>
 </blockquote>
-<h3><span id="references">References</span><a href="#references" class="header-anchor">#</a></h3><p>[1] I. Reed and G. Solomon, BPolynomial codes over certain finite fields,[ J. Soc. Ind. Appl. Math., vol. 8,<br>no. 2, pp. 300–304, Jun. 1960.<br>[2] Wicker and Bhargava, Reed-Solomon Codes and Their Applications, 1994.<br>[3] James S. Plank and Lihao Xu, Optimizing Cauchy Reed-Solomon Codes for Fault-Tolerant Network Storage Applications.<br>[4] Reed–Solomon codes for coders.<br>[5] Khan O, Burns R C, Plank J S, et al. Rethinking erasure codes for cloud file systems: minimizing I/O for recovery and degraded reads.<br>[6] Huang Cheng, Chen Minghua, Li Jin. Pyramid codes: flexible schemes to trade space for access efficiency in reliable data storage systems.<br>[7] Sathiamoorthy M, Asteris M, Papailiopoulos D, et al. Xoring elephants: novel erasure codes for big data.<br>[8]  J. Blomer, M. Kalfane, R. Karp, M. Karpinski, M. Luby, and D. Zuckerman, An XOR-Based Erasure-Resilient Coding Scheme.</p>
+<h3><span id="references">References</span><a href="#references" class="header-anchor">#</a></h3>
+<p>[1] I. Reed and G. Solomon, BPolynomial codes over certain finite fields,[ J. Soc. Ind. Appl. Math., vol. 8,<br>
+no. 2, pp. 300–304, Jun. 1960.
+[2] Wicker and Bhargava, Reed-Solomon Codes and Their Applications, 1994.
+[3] James S. Plank and Lihao Xu, Optimizing Cauchy Reed-Solomon Codes for Fault-Tolerant Network Storage Applications.
+[4] Reed–Solomon codes for coders.
+[5] Khan O, Burns R C, Plank J S, et al. Rethinking erasure codes for cloud file systems: minimizing I/O for recovery and degraded reads.
+[6] Huang Cheng, Chen Minghua, Li Jin. Pyramid codes: flexible schemes to trade space for access efficiency in reliable data storage systems.
+[7] Sathiamoorthy M, Asteris M, Papailiopoulos D, et al. Xoring elephants: novel erasure codes for big data.
+[8]  J. Blomer, M. Kalfane, R. Karp, M. Karpinski, M. Luby, and D. Zuckerman, An XOR-Based Erasure-Resilient Coding Scheme.</p>
 
   </section>
 
@@ -349,7 +399,6 @@ S_{2s}\tag{5}
 
 
 
-
 在servers上安装 Go 环境
 生成 ifps 节点
 创建共享密钥
@@ -358,8 +407,11 @@ S_{2s}\tag{5}
 
 
 
+本例为建立包含三个节点的IPFS私有网络，节点分别为：
+server a: root@45.32.28.71
+server b: root@207.148.109.110
+本地 mac
 
-本例为建立包含三个节点的IPFS私有网络，节点分别为： server a: root@45.32.28.71 server b: root@207.148.109.110本地 mac
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2018-11-04T16:00:00.000Z" class="post-list__meta--date date">2018-11-05</time> &#8226; <span class="post-list__meta--tags tags">
@@ -379,16 +431,18 @@ S_{2s}\tag{5}
 
 
 
-
 在Ubuntu安装:
 数据类型:
+
 基本类型：
 聚集类型 (aggregate types)：
+
 数组
 结构
 
 
 引用类型
+
 指针
 切片（slice）
 字典（map）
@@ -399,7 +453,7 @@ S_{2s}\tag{5}
 接口类型（interface）：
 
 
-控制流 （for if switch defer got
+控制流 （for if switch defer g
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2018-08-20T05:59:10.000Z" class="post-list__meta--date date">2018-08-20</time> &#8226; <span class="post-list__meta--tags tags">
@@ -484,7 +538,10 @@ S_{2s}\tag{5}
 
 
 
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -501,8 +558,5 @@ S_{2s}\tag{5}
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
+<!-- hexo-inject:end --></body>
 </html>
