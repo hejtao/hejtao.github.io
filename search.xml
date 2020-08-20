@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[深入理解计算机系统]]></title>
+    <title><![CDATA[CSAPP Labs in Action]]></title>
     <url>%2F2020%2F08%2F03%2F2020-8-3%2F</url>
-    <content type="text"><![CDATA[资料汇总 资料汇总#]]></content>
+    <content type="text"><![CDATA[相关链接 Data Lab 相关链接# Introduction to Computer Systems Lab Assignments Data Lab# 先看README 使用下面的命令来检验结果 ./dlc bits.c ./dlc -e bits.c ./btest (执行这个命令前需要 make btest, apt install libc6-dev-i386)]]></content>
+      <tags>
+        <tag>计算机基础</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Garageband]]></title>
