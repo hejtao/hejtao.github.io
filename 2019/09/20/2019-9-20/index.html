@@ -293,6 +293,7 @@
 <li><a href="#mysql-xi-tong-shu-ju-ku-jian-jie">MySQL系统数据库简介</a></li>
 </ul>
 </li>
+<li><a href="#innodb-biao-kong-jian">InnoDB表空间</a></li>
 </ul>
 <!-- tocstop -->
 </div>
@@ -432,10 +433,10 @@ MySQL服务器进程的默认端口号为3306，自定义MySQL服务器进程的
 </ul>
 <p>因此，上图中设置变长类型<code>VARCHAR(M)</code>（M表示允许的字符数量）M=65535时导致了溢出。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-0e1da580a7f2aa45.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
-<p>真实数据：65533 = 65529(c1)+ 4(c2)
-长度标识：2
-NULL值标识：1
-共65536 &gt; 65535溢出。</p>
+<p>真实数据：65533 = 65529(c1)+ 4(c2)</p>
+<p>长度标识：2</p>
+<p>NULL值标识：1</p>
+<p>共65536 &gt; 65535溢出。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-f0eb4612f6ec51fd.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
 <p>更换字符集后溢出。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-58720a826df6d70e.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
@@ -719,6 +720,7 @@ NULL值标识：1
 <p>这个数据库主要是通过视图的形式把information_schema和performance_schema结合起来</p>
 </li>
 </ul>
+<h2><span id="innodb-biao-kong-jian">InnoDB表空间</span><a href="#innodb-biao-kong-jian" class="header-anchor">#</a></h2>
 
   </section>
 
