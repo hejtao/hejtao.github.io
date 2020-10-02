@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[Docker Notes]]></title>
     <url>%2F2020%2F10%2F01%2F2020-10-01%2F</url>
-    <content type="text"><![CDATA[安装Mysql 安装Redis 安装Nginx 常用命令 安装Mysql# 1docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 --name mysql mysq 安装Redis# 1docker run -itd --name redis-test -p 6379:6379 redis 安装Nginx# 1docker run -itd --name redis-test -p 6379:6379 redis 常用命令# 12345678910docker search redisdocker pull redisdocker ps -aqdocker ps -af status=exiteddocker start $(docker ps -aqf status=exited)docker stop redisdocker rm redisdocker logs redisdocker port redisdocker run -it nginx bash]]></content>
+    <content type="text"><![CDATA[安装Mysql 安装Redis 安装Nginx 常用命令 安装Mysql# 1docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 --name mysql mysq 安装Redis# 1docker run -d -p 6379:6379 --name redis redis 安装Nginx# 1docker run -d --name nginx nginx 常用命令# 1234567891011docker search redisdocker pull redisdocker ps -aqdocker ps -af status=exiteddocker start $(docker ps -aqf status=exited)docker stop redisdocker rm redisdocker logs redisdocker port redisdocker run -it nginx bashdocker exec -it nginx bash]]></content>
       <tags>
         <tag>docker</tag>
       </tags>
