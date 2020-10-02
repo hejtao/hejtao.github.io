@@ -171,6 +171,7 @@
 <li><a href="#an-zhuang-mysql">安装Mysql</a></li>
 <li><a href="#an-zhuang-redis">安装Redis</a></li>
 <li><a href="#an-zhuang-nginx">安装Nginx</a></li>
+<li><a href="#an-zhuang-yapi">安装Yapi</a></li>
 <li><a href="#chang-yong-ming-ling">常用命令</a></li>
 </ul>
 <!-- tocstop -->
@@ -181,8 +182,10 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 6379:6379 --name redis redis</span><br></pre></td></tr></table></figure>
 <h3><span id="an-zhuang-nginx">安装Nginx</span><a href="#an-zhuang-nginx" class="header-anchor">#</a></h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name nginx nginx</span><br></pre></td></tr></table></figure>
+<h3><span id="an-zhuang-yapi">安装Yapi</span><a href="#an-zhuang-yapi" class="header-anchor">#</a></h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name mongo-yapi mongo</span><br><span class="line">docker pull hejtao/yapi</span><br><span class="line">docker run -d \</span><br><span class="line">  --name yapi \</span><br><span class="line">  --link mongo-yapi:mongo \</span><br><span class="line">  --workdir /api/vendors \</span><br><span class="line">  -p 3000:3000 \</span><br><span class="line">  hejtao/yapi \</span><br><span class="line">  server/app.js</span><br></pre></td></tr></table></figure>
 <h3><span id="chang-yong-ming-ling">常用命令</span><a href="#chang-yong-ming-ling" class="header-anchor">#</a></h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker search redis</span><br><span class="line">docker pull redis</span><br><span class="line">docker ps -aq</span><br><span class="line">docker ps -af status=exited</span><br><span class="line">docker start $(docker ps -aqf status=exited)</span><br><span class="line">docker stop redis</span><br><span class="line">docker rm redis</span><br><span class="line">docker logs redis</span><br><span class="line">docker port redis</span><br><span class="line">docker run -it nginx bash</span><br><span class="line">docker <span class="built_in">exec</span> -it nginx bash</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">docker search redis</span><br><span class="line">docker pull redis</span><br><span class="line"></span><br><span class="line">docker ps -aq</span><br><span class="line">docker ps -af status=exited  (created|restarting|running|removing|paused|exited|dead)</span><br><span class="line">docker ps -a --format <span class="string">"table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Names&#125;&#125;\t&#123;&#123;.Ports&#125;&#125;\t&#123;&#123;.Status&#125;&#125;"</span>  </span><br><span class="line"></span><br><span class="line">docker start $(docker ps -aqf status=exited)</span><br><span class="line">docker ps -aqf status=exited | xargs docker start</span><br><span class="line">docker stop redis</span><br><span class="line"></span><br><span class="line">docker rm redis</span><br><span class="line"></span><br><span class="line">docker logs redis</span><br><span class="line">docker port redis</span><br><span class="line"></span><br><span class="line">docker run -it nginx bash</span><br><span class="line">docker <span class="built_in">exec</span> -it nginx bash</span><br><span class="line"></span><br><span class="line">docker image tag registry.cn-hangzhou.aliyuncs.com/anoy/yapi ali/anoy/yapi</span><br><span class="line">docker rmi registry.cn-hangzhou.aliyuncs.com/anoy/yapi</span><br><span class="line"></span><br><span class="line">docker inspect mysql | grep -i ipaddress</span><br></pre></td></tr></table></figure>
   </section>
 
 </article>
@@ -301,10 +304,7 @@ Data Lab#
 
 
 
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -321,5 +321,8 @@ Data Lab#
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<!-- hexo-inject:end -->
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
 </html>
