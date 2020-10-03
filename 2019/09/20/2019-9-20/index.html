@@ -293,7 +293,16 @@
 <li><a href="#mysql-xi-tong-shu-ju-ku-jian-jie">MySQL系统数据库简介</a></li>
 </ul>
 </li>
-<li><a href="#innodb-biao-kong-jian">InnoDB表空间</a></li>
+<li><a href="#innodb-biao-kong-jian">InnoDB表空间</a>
+<ul>
+<li><a href="#shu-ju-ye">数据页</a>
+<ul>
+<li><a href="#ye-lei-xing">页类型</a></li>
+<li><a href="#ye-tong-yong-jie-gou">页通用结构</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <!-- tocstop -->
 </div>
@@ -721,6 +730,11 @@ MySQL服务器进程的默认端口号为3306，自定义MySQL服务器进程的
 </li>
 </ul>
 <h2><span id="innodb-biao-kong-jian">InnoDB表空间</span><a href="#innodb-biao-kong-jian" class="header-anchor">#</a></h2>
+<p>表空间对应着文件系统中一个或多个实际文件（独立表空间对应一个<code>表名.ibd</code>文件）。可以把表空间想象成一本书，当想为某个表插入一条记录的时候，就在书中对应的页来把数据写进去。</p>
+<h3><span id="shu-ju-ye">数据页</span><a href="#shu-ju-ye" class="header-anchor">#</a></h3>
+<h4><span id="ye-lei-xing">页类型</span><a href="#ye-lei-xing" class="header-anchor">#</a></h4>
+<p><img src="/images/16.PNG" alt=""></p>
+<h4><span id="ye-tong-yong-jie-gou">页通用结构</span><a href="#ye-tong-yong-jie-gou" class="header-anchor">#</a></h4>
 
   </section>
 
