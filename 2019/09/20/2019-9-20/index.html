@@ -301,6 +301,11 @@
 <li><a href="#ye-tong-yong-jie-gou">页通用结构</a></li>
 </ul>
 </li>
+<li><a href="#du-li-biao-kong-jian-jie-gou">独立表空间结构</a>
+<ul>
+<li><a href="#qu-extent-de-gai-nian">区（extent）的概念</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -733,12 +738,15 @@ MySQL服务器进程的默认端口号为3306，自定义MySQL服务器进程的
 <p>表空间对应着文件系统中一个或多个实际文件（独立表空间对应一个<code>表名.ibd</code>文件）。可以把表空间想象成一本书，当想为某个表插入一条记录的时候，就在书中对应的页来把数据写进去。</p>
 <h3><span id="shu-ju-ye">数据页</span><a href="#shu-ju-ye" class="header-anchor">#</a></h3>
 <h4><span id="ye-lei-xing">页类型</span><a href="#ye-lei-xing" class="header-anchor">#</a></h4>
-<p><img src="/images/198" alt=""></p>
+<p><img src="/images/198.png" alt=""></p>
 <h4><span id="ye-tong-yong-jie-gou">页通用结构</span><a href="#ye-tong-yong-jie-gou" class="header-anchor">#</a></h4>
 <p><img src="/images/199.jpg" alt=""></p>
 <p>File Header : 记录数据页的一些通用信息
-<img src="/images/200" alt=""></p>
+<img src="/images/200.png" alt=""></p>
 <p>File Trailer：校验数据页，保证从内存到磁盘的数据的一致性</p>
+<h3><span id="du-li-biao-kong-jian-jie-gou">独立表空间结构</span><a href="#du-li-biao-kong-jian-jie-gou" class="header-anchor">#</a></h3>
+<h4><span id="qu-extent-de-gai-nian">区（extent）的概念</span><a href="#qu-extent-de-gai-nian" class="header-anchor">#</a></h4>
+<p>对于16KB的页来说，连续的64个页就是一个区，也就是说一个区默认占用1MB空间大小。每256个区被划分成一组</p>
 
   </section>
 
