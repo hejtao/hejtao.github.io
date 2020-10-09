@@ -304,6 +304,7 @@
 <li><a href="#du-li-biao-kong-jian-jie-gou">独立表空间结构</a>
 <ul>
 <li><a href="#qu-extent-de-gai-nian">区（extent）的概念</a></li>
+<li><a href="#duan-segment-de-gai-nian">段（segment）的概念</a></li>
 </ul>
 </li>
 </ul>
@@ -746,7 +747,17 @@ MySQL服务器进程的默认端口号为3306，自定义MySQL服务器进程的
 <p>File Trailer：校验数据页，保证从内存到磁盘的数据的一致性</p>
 <h3><span id="du-li-biao-kong-jian-jie-gou">独立表空间结构</span><a href="#du-li-biao-kong-jian-jie-gou" class="header-anchor">#</a></h3>
 <h4><span id="qu-extent-de-gai-nian">区（extent）的概念</span><a href="#qu-extent-de-gai-nian" class="header-anchor">#</a></h4>
-<p>对于16KB的页来说，连续的64个页就是一个区，也就是说一个区默认占用1MB空间大小。每256个区被划分成一组</p>
+<p>数据页16KB</p>
+<p>物理上连续的64个页就是一个区1MB</p>
+<p>每256个区被划分成一组，每个组的最开始的几个页面类型是固定的</p>
+<p>系统表空间或独立表空间由若干个区组成</p>
+<p><img src="/images/201.jpg" alt=""></p>
+<p><img src="/images/202.jpg" alt=""></p>
+<p>为什么引入区的设计？</p>
+<blockquote>
+<p>区是连续的存储空间，这样可以减少随机I/O， 增加顺序I/O</p>
+</blockquote>
+<h4><span id="duan-segment-de-gai-nian">段（segment）的概念</span><a href="#duan-segment-de-gai-nian" class="header-anchor">#</a></h4>
 
   </section>
 
