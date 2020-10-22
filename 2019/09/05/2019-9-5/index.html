@@ -164,9 +164,8 @@
   </header>
 
   <section class="post">
-    <p><meta name="referrer" content="no-referrer"></p>
+    <meta name="referrer" content="no-referrer">
 <div class="toc">
-
 <!-- toc -->
 <ul>
 <li><a href="#lian-biao-cha-xun">联表查询</a></li>
@@ -178,15 +177,21 @@
 </ul>
 <!-- tocstop -->
 </div>
-
-<h4><span id="lian-biao-cha-xun">联表查询</span><a href="#lian-biao-cha-xun" class="header-anchor">#</a></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> library.id, library.name, r.reader_sum, b.book_sum <span class="keyword">FROM</span> </span><br><span class="line"><span class="keyword">library</span> </span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span></span><br><span class="line">( <span class="keyword">SELECT</span> library_id, <span class="keyword">count</span>(*) <span class="keyword">AS</span> reader_sum <span class="keyword">FROM</span> reader <span class="keyword">WHERE</span> library_group_id = <span class="number">10</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> library_id ) <span class="keyword">AS</span> r</span><br><span class="line"><span class="keyword">ON</span> r.library_id = library.id </span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span></span><br><span class="line">( <span class="keyword">SELECT</span> library_id, <span class="keyword">count</span>( * ) <span class="keyword">AS</span> book_sum <span class="keyword">FROM</span> book <span class="keyword">WHERE</span> library_group_id = <span class="number">10</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> library_id ) <span class="keyword">AS</span> b</span><br><span class="line"><span class="keyword">ON</span> b.library_id = library.id;</span><br></pre></td></tr></table></figure>
-<h4><span id="zi-fu-ti-huan">字符替换</span><a href="#zi-fu-ti-huan" class="header-anchor">#</a></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">account</span> <span class="keyword">SET</span> grade = <span class="keyword">replace</span>(grade,<span class="string">'級'</span>,<span class="string">'级'</span>);</span><br></pre></td></tr></table></figure>
-<h4><span id="zheng-ze-cha-xun">正则查询</span><a href="#zheng-ze-cha-xun" class="header-anchor">#</a></h4><p><img src="https://upload-images.jianshu.io/upload_images/1863961-2bcf89b08ee87c02.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">account</span> <span class="keyword">WHERE</span> grade REGEXP <span class="string">'級'</span>; <span class="comment">-- 查询包含</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span> <span class="keyword">FROM</span> person <span class="keyword">WHERE</span> <span class="keyword">name</span> REGEXP <span class="string">'^[aeiou]|ok$'</span>; <span class="comment">-- aeiou开头，或ok结尾</span></span><br></pre></td></tr></table></figure></p>
-<h4><span id="dao-ru-sql-wen-jian">导入SQL文件</span><a href="#dao-ru-sql-wen-jian" class="header-anchor">#</a></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> @@global.max_allowed_packet = <span class="number">1024</span>*<span class="number">1024</span>*<span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> @@global.sql_mode =<span class="string">'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'</span>;</span><br><span class="line"><span class="keyword">SET</span> @@sql_mode =<span class="string">'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'</span>;</span><br></pre></td></tr></table></figure>
-<h4><span id="pai-xu">排序</span><a href="#pai-xu" class="header-anchor">#</a></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> book <span class="keyword">WHERE</span> library_id = <span class="number">257</span> <span class="keyword">AND</span> (title REGEXP <span class="string">"我"</span> <span class="keyword">OR</span> author REGEXP <span class="string">"我"</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">LOCATE</span>(<span class="string">"我"</span>, <span class="keyword">CONCAT</span>(title, author)), <span class="keyword">LENGTH</span>(title), <span class="keyword">LENGTH</span>(author);</span><br></pre></td></tr></table></figure>
+<h4><span id="lian-biao-cha-xun">联表查询</span><a href="#lian-biao-cha-xun" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> library.id, library.name, r.reader_sum, b.book_sum <span class="keyword">FROM</span> </span><br><span class="line"><span class="keyword">library</span> </span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span></span><br><span class="line">( <span class="keyword">SELECT</span> library_id, <span class="keyword">count</span>(*) <span class="keyword">AS</span> reader_sum <span class="keyword">FROM</span> reader <span class="keyword">WHERE</span> library_group_id = <span class="number">10</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> library_id ) <span class="keyword">AS</span> r</span><br><span class="line"><span class="keyword">ON</span> r.library_id = library.id </span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span></span><br><span class="line">( <span class="keyword">SELECT</span> library_id, <span class="keyword">count</span>( * ) <span class="keyword">AS</span> book_sum <span class="keyword">FROM</span> book <span class="keyword">WHERE</span> library_group_id = <span class="number">10</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> library_id ) <span class="keyword">AS</span> b</span><br><span class="line"><span class="keyword">ON</span> b.library_id = library.id;</span><br></pre></td></tr></table></figure>
+<h4><span id="zi-fu-ti-huan">字符替换</span><a href="#zi-fu-ti-huan" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">account</span> <span class="keyword">SET</span> grade = <span class="keyword">replace</span>(grade,<span class="string">'級'</span>,<span class="string">'级'</span>);</span><br></pre></td></tr></table></figure>
+<h4><span id="zheng-ze-cha-xun">正则查询</span><a href="#zheng-ze-cha-xun" class="header-anchor">#</a></h4>
+<p><img src="https://upload-images.jianshu.io/upload_images/1863961-2bcf89b08ee87c02.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">account</span> <span class="keyword">WHERE</span> grade REGEXP <span class="string">'級'</span>; <span class="comment">-- 查询包含</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span> <span class="keyword">FROM</span> person <span class="keyword">WHERE</span> <span class="keyword">name</span> REGEXP <span class="string">'^[aeiou]|ok$'</span>; <span class="comment">-- aeiou开头，或ok结尾</span></span><br></pre></td></tr></table></figure>
+<h4><span id="dao-ru-sql-wen-jian">导入SQL文件</span><a href="#dao-ru-sql-wen-jian" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> @@global.max_allowed_packet = <span class="number">1024</span>*<span class="number">1024</span>*<span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> @@global.sql_mode =<span class="string">'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'</span>;</span><br><span class="line"><span class="keyword">SET</span> @@sql_mode =<span class="string">'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'</span>;</span><br></pre></td></tr></table></figure>
+<h4><span id="pai-xu">排序</span><a href="#pai-xu" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> book <span class="keyword">WHERE</span> library_id = <span class="number">257</span> <span class="keyword">AND</span> (title REGEXP <span class="string">"我"</span> <span class="keyword">OR</span> author REGEXP <span class="string">"我"</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">LOCATE</span>(<span class="string">"我"</span>, <span class="keyword">CONCAT</span>(title, author)), <span class="keyword">LENGTH</span>(title), <span class="keyword">LENGTH</span>(author);</span><br></pre></td></tr></table></figure>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">IN</span> (<span class="number">3</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">7</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">field</span>(<span class="keyword">id</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">7</span>);</span><br></pre></td></tr></table></figure>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span></span><br><span class="line">( <span class="keyword">SELECT</span> isbn13, cn_title, <span class="keyword">count</span>(*) total <span class="keyword">FROM</span> book_info <span class="keyword">WHERE</span> isbn13 != <span class="string">''</span> <span class="keyword">AND</span> <span class="keyword">source</span> <span class="keyword">IN</span> (<span class="string">'yidi'</span>, <span class="string">'guotu'</span>, <span class="string">'douban'</span>, <span class="string">'dangdang'</span>) <span class="keyword">GROUP</span> <span class="keyword">BY</span> isbn13, cn_title ) t1</span><br><span class="line"><span class="keyword">WHERE</span> total &gt; <span class="number">1</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> total <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
-<h4><span id="chang-yong-ming-ling">常用命令</span><a href="#chang-yong-ming-ling" class="header-anchor">#</a></h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> hejtao <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> <span class="string">'utf8mb4'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> hejtao <span class="keyword">COLLATE</span> <span class="string">'utf8mb4_general_ci'</span>;</span><br></pre></td></tr></table></figure>
+<h4><span id="chang-yong-ming-ling">常用命令</span><a href="#chang-yong-ming-ling" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> hejtao <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> <span class="string">'utf8mb4'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> hejtao <span class="keyword">COLLATE</span> <span class="string">'utf8mb4_general_ci'</span>;</span><br></pre></td></tr></table></figure>
 
   </section>
 
@@ -205,16 +210,18 @@
 
 
 
-
 重新认识MySQL
+
 客户端 + 服务器
 启动服务器程序
+
 UNIX
 Windows
 
 
 启动客户端程序
 客户端与服务器的通信
+
 TCP/IP
 命名管道和共享内存
 UNIX域套接字文件
@@ -225,9 +232,11 @@ UNIX域套接字文件
 
 
 启动选项和系统变量
+
 在命令行上使用选项
 配置文件中使用选项
-Windo
+
+W
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2019-09-19T16:00:00.000Z" class="post-list__meta--date date">2019-09-20</time> &#8226; <span class="post-list__meta--tags tags">
@@ -247,7 +256,6 @@ Windo
 
 
 
-
 MapReduce执行概述
 序言：熟悉源代码
 Part I: Map/Reduce 输入和输出
@@ -257,9 +265,9 @@ Part IV: worker错误处理
 
 
 
-
 原文链接
 MapReduce执行概述#
+论
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2019-04-29T16:00:00.000Z" class="post-list__meta--date date">2019-04-30</time> &#8226; <span class="post-list__meta--tags tags">
