@@ -169,8 +169,6 @@
 <!-- toc -->
 <ul>
 <li><a href="#ji-ben-ming-ling">基本命令</a></li>
-</ul>
-<ul>
 <li><a href="#cha-ru-mo-shi">插入模式</a></li>
 <li><a href="#yi-dong-guang-biao">移动光标</a></li>
 <li><a href="#kao-bei-nian-tie">拷贝/粘贴</a></li>
@@ -199,14 +197,14 @@
 <li>跳回: 键入 CTRL-T。</li>
 <li>翻页：键入 CTRL-F/B</li>
 </ul>
-<h2><span id="cha-ru-mo-shi">插入模式</span><a href="#cha-ru-mo-shi" class="header-anchor">#</a></h2>
+<h3><span id="cha-ru-mo-shi">插入模式</span><a href="#cha-ru-mo-shi" class="header-anchor">#</a></h3>
 <ul>
 <li><code>a</code> 在光标后插入</li>
 <li><code>o</code> 在当前行后插入一个新行</li>
 <li><code>O</code> 在当前行前插入一个新行</li>
 <li><code>cw</code> 替换从光标所在位置后到一个单词结尾的字符</li>
 </ul>
-<h2><span id="yi-dong-guang-biao">移动光标</span><a href="#yi-dong-guang-biao" class="header-anchor">#</a></h2>
+<h3><span id="yi-dong-guang-biao">移动光标</span><a href="#yi-dong-guang-biao" class="header-anchor">#</a></h3>
 <ul>
 <li><code>0</code> 数字零，到行头</li>
 <li><code>^</code> 到本行第一个不是blank字符的位置</li>
@@ -215,18 +213,18 @@
 <li><code>/pattern</code> 搜索 pattern 的字符串(按n到下一个)</li>
 <li><code>w b</code> 词移动</li>
 </ul>
-<h2><span id="kao-bei-nian-tie">拷贝/粘贴</span><a href="#kao-bei-nian-tie" class="header-anchor">#</a></h2>
+<h3><span id="kao-bei-nian-tie">拷贝/粘贴</span><a href="#kao-bei-nian-tie" class="header-anchor">#</a></h3>
 <ul>
 <li><code>p</code> 在当前位置之后粘贴</li>
 <li><code>P</code> 在当前位置之前粘贴</li>
 <li><code>yy</code> 拷贝当前行，相当于 ddP</li>
 </ul>
-<h2><span id="che-xiao-chong-zuo">撤销/重做</span><a href="#che-xiao-chong-zuo" class="header-anchor">#</a></h2>
+<h3><span id="che-xiao-chong-zuo">撤销/重做</span><a href="#che-xiao-chong-zuo" class="header-anchor">#</a></h3>
 <ul>
 <li><code>u</code> undo</li>
 <li><code>&lt;C-r&gt;</code> redo</li>
 </ul>
-<h2><span id="da-kai-bao-cun-tui-chu-gai-bian-wen-jian-buffer">打开/保存/退出/改变文件(Buffer)</span><a href="#da-kai-bao-cun-tui-chu-gai-bian-wen-jian-buffer" class="header-anchor">#</a></h2>
+<h3><span id="da-kai-bao-cun-tui-chu-gai-bian-wen-jian-buffer">打开/保存/退出/改变文件(Buffer)</span><a href="#da-kai-bao-cun-tui-chu-gai-bian-wen-jian-buffer" class="header-anchor">#</a></h3>
 <ul>
 <li><code>:e &lt;path/to/file&gt;</code> 打开一个文件</li>
 <li><code>:w</code> 存盘</li>
@@ -236,7 +234,7 @@
 <li><code>:qa!</code> 强行退出所有文件。</li>
 <li><code>:bn</code> 和 <code>:bp</code> 你可以同时打开很多文件，使用这两个命令来切换下一个或上一个文件。</li>
 </ul>
-<h2><span id="ji-qiao">技巧</span><a href="#ji-qiao" class="header-anchor">#</a></h2>
+<h3><span id="ji-qiao">技巧</span><a href="#ji-qiao" class="header-anchor">#</a></h3>
 <ol>
 <li>打开 Vim之后，可以用 <code>:split filename</code>或 <code>:vsplit filename</code> 或 <code>new filename</code> 横向或纵向切割窗口，使用 <code>ctrl + w</code> 可以在个窗口之间跳转，使用 <code>ctrl + 方向键</code> 可以按照方向切换窗口。</li>
 <li>用 Vim 打开一个文件，如果我们想实现所有文本行翻转，那么可以执行如下命令：<code>:g/^/m 0</code></li>
