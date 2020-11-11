@@ -243,8 +243,8 @@
 <li>如果你想把当前目录下（包括子文件夹）所有后缀为 java 的文件中的 apache 替换成 eclipse，那么依次执行如下命令： 在当前目录下执行：</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim</span><br><span class="line">:n **/*.java</span><br><span class="line">:argdo %s/apache/eclipse/ge | update</span><br></pre></td></tr></table></figure>
-<p>gg
-shift g
+<p>gg 首行
+G 末行
 $ 行末
 ^ 行首</p>
 
