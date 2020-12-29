@@ -178,16 +178,16 @@
 <li><a href="#using-an-official-image">Using an Official Image</a>
 <ul>
 <li><a href="#bian-xie-dockerfile">编写Dockerfile</a></li>
-<li><a href="#bian-xie-dock-var-ji-lu-can-shu">编写dock.var记录参数</a></li>
-<li><a href="#bian-xie-dockploy-sh-wen-jian-bing-zhi-xing-bu-shu">编写dockploy.sh文件并执行部署</a></li>
+<li><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu">编写dock.var文件记录镜像的版本参数</a></li>
+<li><a href="#bian-xie-shell-zhi-xing-wen-jian-dockploy-sh">编写shell执行文件dockploy.sh</a></li>
 </ul>
 </li>
 <li><a href="#using-the-scratch-image">Using the Scratch Image</a>
 <ul>
 <li><a href="#chuang-jian-yi-lai-jing-xiang-my-alpine">创建依赖镜像my-alpine</a></li>
 <li><a href="#bian-xie-dockerfile-wen-jian">编写Dockerfile文件</a></li>
-<li><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu">编写dock.var文件记录镜像的版本参数</a></li>
-<li><a href="#bian-xie-shell-zhi-xing-wen-jian-dockploy-sh">编写shell执行文件dockploy.sh</a></li>
+<li><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu-1">编写dock.var文件记录镜像的版本参数</a></li>
+<li><a href="#bian-xie-shell-zhi-xing-wen-jian-dockploy-sh-1">编写shell执行文件dockploy.sh</a></li>
 </ul>
 </li>
 </ul>
@@ -209,9 +209,9 @@
 <h4><span id="using-an-official-image">Using an Official Image</span><a href="#using-an-official-image" class="header-anchor">#</a></h4>
 <h5><span id="bian-xie-dockerfile">编写Dockerfile</span><a href="#bian-xie-dockerfile" class="header-anchor">#</a></h5>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">FROM golang:alpine</span><br><span class="line"></span><br><span class="line">ENV CGO_ENABLED=0</span><br><span class="line">ENV GO111MODULE=on</span><br><span class="line">ENV GOPROXY=https://goproxy.cn</span><br><span class="line"></span><br><span class="line">WORKDIR /root/go/src/app</span><br><span class="line">COPY . .</span><br><span class="line">EXPOSE 6666</span><br><span class="line"></span><br><span class="line">RUN go build -o app</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">"./app"</span>]</span><br></pre></td></tr></table></figure>
-<h5><span id="bian-xie-dock-var-ji-lu-can-shu">编写dock.var记录参数</span><a href="#bian-xie-dock-var-ji-lu-can-shu" class="header-anchor">#</a></h5>
+<h5><span id="bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu">编写dock.var文件记录镜像的版本参数</span><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu" class="header-anchor">#</a></h5>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> IMA_TAG_NUM=4</span><br></pre></td></tr></table></figure>
-<h5><span id="bian-xie-dockploy-sh-wen-jian-bing-zhi-xing-bu-shu">编写dockploy.sh文件并执行部署</span><a href="#bian-xie-dockploy-sh-wen-jian-bing-zhi-xing-bu-shu" class="header-anchor">#</a></h5>
+<h5><span id="bian-xie-shell-zhi-xing-wen-jian-dockploy-sh">编写shell执行文件dockploy.sh</span><a href="#bian-xie-shell-zhi-xing-wen-jian-dockploy-sh" class="header-anchor">#</a></h5>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> dock.var</span><br><span class="line"></span><br><span class="line">docker build -t app_img:v$((IMA_TAG_NUM)) .</span><br><span class="line">docker stop app</span><br><span class="line">docker rm app</span><br><span class="line">docker run --name app -p 8780:8780 -d app_img:v$((IMA_TAG_NUM))</span><br><span class="line">docker rmi app_img:v$((IMA_TAG_NUM-1))</span><br><span class="line"></span><br><span class="line">IMA_TAG_NUM=$((IMA_TAG_NUM+1))</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">export</span> IMA_TAG_NUM=<span class="variable">$&#123;IMA_TAG_NUM&#125;</span>&gt;dock.var</span><br></pre></td></tr></table></figure>
 <h4><span id="using-the-scratch-image">Using the Scratch Image</span><a href="#using-the-scratch-image" class="header-anchor">#</a></h4>
 <h5><span id="chuang-jian-yi-lai-jing-xiang-my-alpine">创建依赖镜像my-alpine</span><a href="#chuang-jian-yi-lai-jing-xiang-my-alpine" class="header-anchor">#</a></h5>
