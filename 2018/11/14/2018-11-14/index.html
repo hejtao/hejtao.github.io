@@ -166,14 +166,14 @@
   </header>
 
   <section class="post">
-    <p><meta name="referrer" content="no-referrer"></p>
+    <meta name="referrer" content="no-referrer">
 <div class="toc">
-
 <!-- toc -->
 <ul>
 <li><a href="#1-shi-me-shi-go-nei-cun-mo-xing">1. 什么是 Go内存模型？</a></li>
 <li><a href="#2-happens-before">2. Happens Before</a></li>
-<li><a href="#3-synchronization">3. Synchronization</a><ul>
+<li><a href="#3-synchronization">3. Synchronization</a>
+<ul>
 <li><a href="#3-1-initialization">3.1 Initialization</a></li>
 <li><a href="#3-2-goroutine-creation">3.2 Goroutine creation</a></li>
 <li><a href="#3-3-goroutine-destruction">3.3 Goroutine destruction</a></li>
@@ -186,43 +186,59 @@
 </ul>
 <!-- tocstop -->
 </div>
-
 <p>本文主要翻译自官方文档 <a href="https://golang.org/ref/mem" target="_blank" rel="noopener">The Go Memory Model</a></p>
-<h3><span id="1-shi-me-shi-go-nei-cun-mo-xing">1. 什么是 Go内存模型？</span><a href="#1-shi-me-shi-go-nei-cun-mo-xing" class="header-anchor">#</a></h3><p>我们知道不同的 goroutine 可以对同一个变量进行读写操作。Go内存模型指定了在什么样的条件下可以保证一个 goroutine 写入到变量的值可以被另外一个 goroutine 正确的读取。</p>
-<h3><span id="2-happens-before">2. Happens Before</span><a href="#2-happens-before" class="header-anchor">#</a></h3><p>在单个 goroutine 中，读、写操作按照程序设计的顺序进行。需要注意的是，在不改变 goroutine 程序行为的前提下，这些读、写顺序在编译的过程中可能会被<strong>重排</strong>。因此导致对相同变量的读、写操作在不同的 goroutine 看来执行顺序可能不同。例如，如果在某个 goroutine 中执行 a = 1; b = 2;，另一个 goroutine 可能观察到变量 b 比 a 先被赋值。</p>
-<p>Happens Before 是针对Go语言编程中内存操作的一种局部排序。 如果 $e<em>{1}$ happens before  $e</em>{2}$，那么也可以说 $e<em>{2}$ happens after  $e</em>{1}$。进一步，如果 $e<em>{1}$  既不 happens before  $e</em>{2}$，也不 happens after  $e<em>{2}$，那么我们称 $e</em>{1}$ 和 $e_{2}$  happen concurrently (<strong>并发</strong>)。</p>
+<h3><span id="1-shi-me-shi-go-nei-cun-mo-xing">1. 什么是 Go内存模型？</span><a href="#1-shi-me-shi-go-nei-cun-mo-xing" class="header-anchor">#</a></h3>
+<p>我们知道不同的 goroutine 可以对同一个变量进行读写操作。Go内存模型指定了在什么样的条件下可以保证一个 goroutine 写入到变量的值可以被另外一个 goroutine 正确的读取。</p>
+<h3><span id="2-happens-before">2. Happens Before</span><a href="#2-happens-before" class="header-anchor">#</a></h3>
+<p>在单个 goroutine 中，读、写操作按照程序设计的顺序进行。需要注意的是，在不改变 goroutine 程序行为的前提下，这些读、写顺序在编译的过程中可能会被<strong>重排</strong>。因此导致对相同变量的读、写操作在不同的 goroutine 看来执行顺序可能不同。例如，如果在某个 goroutine 中执行 a = 1; b = 2;，另一个 goroutine 可能观察到变量 b 比 a 先被赋值。</p>
+<p>Happens Before 是针对Go语言编程中内存操作的一种局部排序。 如果 $e_{1}$ happens before  $e_{2}$，那么也可以说 $e_{2}$ happens after  $e_{1}$。进一步，如果 $e_{1}$  既不 happens before  $e_{2}$，也不 happens after  $e_{2}$，那么我们称 $e_{1}$ 和 $e_{2}$  happen concurrently (<strong>并发</strong>)。</p>
 <blockquote>
 <p>在单个 goroutine 中，Happens Before顺序就是程序设计的顺序</p>
 </blockquote>
-<p>$v$：某个变量<br>$w$: 对$v$的写<br> $w’$: 对$v$的写，不同于$w$<br>$r$: 对$v$的读</p>
+<p>$v$：某个变量
+$w$: 对$v$的写
+$w'$: 对$v$的写，不同于$w$
+$r$: 对$v$的读</p>
 <p><strong>$w$可以被$r$获取的条件</strong>：</p>
 <ul>
 <li>$r$ 不 happen before $w$. (包括 happen after 和 happen concurrently)</li>
-<li>不存在另一个 $w’$  happens after $w$ but before $r$.</li>
+<li>不存在另一个 $w'$  happens after $w$ but before $r$.</li>
 </ul>
-<p><strong>$w$保证能被$r$获取的条件</strong>(该条件不允许$w’$与$w$或者$r$并发，因此比上面的条件更强):</p>
+<p><strong>$w$保证能被$r$获取的条件</strong>(该条件不允许$w'$与$w$或者$r$并发，因此比上面的条件更强):</p>
 <ul>
 <li>$w$ happens before $r$.</li>
-<li>任何其它的 $w’$ 要么 happens before $w$，要么 happens after $r$.</li>
+<li>任何其它的 $w'$ 要么 happens before $w$，要么 happens after $r$.</li>
 </ul>
-<p>当有多个 goroutine 可以访问$v$时，必须利用同步事件(synchronization events)来建立 happens before 以保证 $r$能够获取想要的$w$。<br>在初始化过程中，赋给$v$以其类型的零值的操作可以看作是内存模型中的一种$w$</p>
-<h3><span id="3-synchronization">3. Synchronization</span><a href="#3-synchronization" class="header-anchor">#</a></h3><h4><span id="3-1-initialization">3.1 Initialization</span><a href="#3-1-initialization" class="header-anchor">#</a></h4><p>程序的初始化在一个 goroutine 中进行，并且在该 goroutine 中还可以创建其它的 goroutine</p>
+<p>当有多个 goroutine 可以访问$v$时，必须利用同步事件(synchronization events)来建立 happens before 以保证 $r$能够获取想要的$w$。
+在初始化过程中，赋给$v$以其类型的零值的操作可以看作是内存模型中的一种$w$</p>
+<h3><span id="3-synchronization">3. Synchronization</span><a href="#3-synchronization" class="header-anchor">#</a></h3>
+<h4><span id="3-1-initialization">3.1 Initialization</span><a href="#3-1-initialization" class="header-anchor">#</a></h4>
+<p>程序的初始化在一个 goroutine 中进行，并且在该 goroutine 中还可以创建其它的 goroutine</p>
 <blockquote>
 <p>如果包 $p$导入了包$q$，那么包$q$在被导入之前就完成了初始化，函数main.main在所有的init函数完成后开始执行，见astaxie的<a href="https://github.com/jiangtaohe/build-web-application-with-golang/blob/master/zh/02.3.md" target="_blank" rel="noopener">main函数和init函数一文</a></p>
 </blockquote>
-<h4><span id="3-2-goroutine-creation">3.2 Goroutine creation</span><a href="#3-2-goroutine-creation" class="header-anchor">#</a></h4><blockquote>
+<h4><span id="3-2-goroutine-creation">3.2 Goroutine creation</span><a href="#3-2-goroutine-creation" class="header-anchor">#</a></h4>
+<blockquote>
 <p>启动一个新的 goroutine 的 <strong>Go</strong>声明发生在该 goroutine开始执行之前</p>
 </blockquote>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="built_in">print</span>(a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	a = <span class="string">"hello, world"</span></span><br><span class="line">	<span class="keyword">go</span> f()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	hello()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>调用hello()将会在未来某个时间点( 可能在hello()返回之后 )打印hello, world</p>
-<h4><span id="3-3-goroutine-destruction">3.3 Goroutine destruction</span><a href="#3-3-goroutine-destruction" class="header-anchor">#</a></h4><p>无法保证 goroutine 在其创建程序中的某个位置退出<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span>(<span class="params"></span>)</span> &#123; a = <span class="string">"hello"</span> &#125;()</span><br><span class="line">	<span class="built_in">print</span>(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h4><span id="3-3-goroutine-destruction">3.3 Goroutine destruction</span><a href="#3-3-goroutine-destruction" class="header-anchor">#</a></h4>
+<p>无法保证 goroutine 在其创建程序中的某个位置退出</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">hello</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span>(<span class="params"></span>)</span> &#123; a = <span class="string">"hello"</span> &#125;()</span><br><span class="line">	<span class="built_in">print</span>(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>对 a 的写(赋值)没有进行任何同步操作，无法被其它 goroutine 获取，在激进的编译器中甚至可能会删除整个 go 声明。</p>
-<h4><span id="3-4-channel-communication">3.4 Channel communication</span><a href="#3-4-channel-communication" class="header-anchor">#</a></h4><p>通道通信(channel communication)是同步两个 goroutine 的主要方法。</p>
+<h4><span id="3-4-channel-communication">3.4 Channel communication</span><a href="#3-4-channel-communication" class="header-anchor">#</a></h4>
+<p>通道通信(channel communication)是同步两个 goroutine 的主要方法。</p>
 <blockquote>
 <p>send 发生在完成相应的 receive 之前</p>
 </blockquote>
-<p>程序：<br> <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	a = <span class="string">"hello, world"</span></span><br><span class="line">	c &lt;- <span class="number">0</span> <span class="comment">// send</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">go</span> f()</span><br><span class="line">	&lt;-c <span class="comment">// receive</span></span><br><span class="line">	<span class="built_in">print</span>(a)</span><br><span class="line">&#125;</span><br><span class="line">&gt; Output:</span><br><span class="line">command-line-arguments</span><br><span class="line">hello, world</span><br></pre></td></tr></table></figure></p>
-<p>会保证打印 hello, world，因为：<br>对 a 的写 <strong>happens before</strong> 通道 c 的 send<br>通道 c 的 send <strong>happens before</strong> 通道 c 的 receive<br>通道 c 的 receive <strong>happens before</strong> print(a)，因此 ,<br>对 a 的写 <strong>happens before</strong> print(a), 即保证 main() 获取了 goroutine 对 a的写</p>
+<p>程序：</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">10</span>)</span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	a = <span class="string">"hello, world"</span></span><br><span class="line">	c &lt;- <span class="number">0</span> <span class="comment">// send</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">go</span> f()</span><br><span class="line">	&lt;-c <span class="comment">// receive</span></span><br><span class="line">	<span class="built_in">print</span>(a)</span><br><span class="line">&#125;</span><br><span class="line">&gt; Output:</span><br><span class="line">command-line-arguments</span><br><span class="line">hello, world</span><br></pre></td></tr></table></figure>
+<p>会保证打印 hello, world，因为：
+对 a 的写 <strong>happens before</strong> 通道 c 的 send
+通道 c 的 send <strong>happens before</strong> 通道 c 的 receive
+通道 c 的 receive <strong>happens before</strong> print(a)，因此 ,
+对 a 的写 <strong>happens before</strong> print(a), 即保证 main() 获取了 goroutine 对 a的写</p>
 <blockquote>
 <p>channel 的关闭发生在完成 receive(此时得到的是通道类型的零值)之前</p>
 </blockquote>
@@ -232,26 +248,35 @@
 </blockquote>
 <p>调换 <code>c &lt;- 0 // send</code> 和 <code>&lt;-c // receive</code>的位置，得到程序</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> c = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>)</span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	a = <span class="string">"hello, world"</span></span><br><span class="line">	&lt;-c <span class="comment">//receive</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">go</span> f()</span><br><span class="line">	c &lt;- <span class="number">0</span> <span class="comment">// send</span></span><br><span class="line">	<span class="built_in">print</span>(a)</span><br><span class="line">&#125;</span><br><span class="line">&gt; Output:</span><br><span class="line">command-line-arguments</span><br><span class="line">hello, world</span><br></pre></td></tr></table></figure>
-<p>仍然保证打印 hello, world<br>但如果channel具有缓存，例如当<code>c = make(chan int, 1)</code>，那么程序无法保证打印 hello, world</p>
+<p>仍然保证打印 hello, world
+但如果channel具有缓存，例如当<code>c = make(chan int, 1)</code>，那么程序无法保证打印 hello, world</p>
 <blockquote>
 <p>当通道的容量为$c$时，第 $k$ 次 receive 发生在完成第 $k+c$ 次 send 之前</p>
 </blockquote>
 <p>下面的程序给 work 的每个条目(函数类型)启动一个 goroutine，由于通道limit的容量为3，因此最多允许3个 goroutine 调用调用了函数w()</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> limit = <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">int</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> _, w := <span class="keyword">range</span> work &#123;</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span>(<span class="params">w <span class="keyword">func</span>(</span>))</span> &#123;</span><br><span class="line">			limit &lt;- <span class="number">1</span></span><br><span class="line">			w()</span><br><span class="line">			&lt;-limit</span><br><span class="line">		&#125;(w)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4><span id="3-5-locks">3.5 Locks</span><a href="#3-5-locks" class="header-anchor">#</a></h4><p> <code>sync</code> 包实现了两种 <code>lock</code> 数据类型, <code>sync.Mutex</code>和 <code>sync.RWMutex</code>.</p>
+<h4><span id="3-5-locks">3.5 Locks</span><a href="#3-5-locks" class="header-anchor">#</a></h4>
+<p><code>sync</code> 包实现了两种 <code>lock</code> 数据类型, <code>sync.Mutex</code>和 <code>sync.RWMutex</code>.</p>
 <blockquote>
 <p>对任意的 <code>sync.Mutex</code> 或者 <code>sync.RWMutex</code>变量 <code>l</code>且$n&lt;m$，第$n$次调用  <code>l.Unlock()</code> 发生在 第 $m$次调用 <code>l.Lock()</code>返回之前</p>
 </blockquote>
-<p>程序<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> l sync.Mutex</span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	a = <span class="string">"hello, world"</span></span><br><span class="line">	l.Unlock() <span class="comment">//第一次 l.Unlock()</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	l.Lock()</span><br><span class="line">	<span class="keyword">go</span> f()</span><br><span class="line">	l.Lock() <span class="comment">//第二次 l.Lock()</span></span><br><span class="line">	<span class="built_in">print</span>(a)</span><br><span class="line">&#125;</span><br><span class="line">&gt; Output:</span><br><span class="line">command-line-arguments</span><br><span class="line">hello, world</span><br></pre></td></tr></table></figure></p>
-<p>保证打印hello, world，因为，<br>第一次 <code>l.Unlock()</code>  <strong>happens before</strong>  第二次 <code>l.Lock()</code> 返回<br>第二次 <code>l.Lock()</code> 返回 <strong>happens before</strong>  print(a)</p>
+<p>程序</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> l sync.Mutex</span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	a = <span class="string">"hello, world"</span></span><br><span class="line">	l.Unlock() <span class="comment">//第一次 l.Unlock()</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	l.Lock()</span><br><span class="line">	<span class="keyword">go</span> f()</span><br><span class="line">	l.Lock() <span class="comment">//第二次 l.Lock()</span></span><br><span class="line">	<span class="built_in">print</span>(a)</span><br><span class="line">&#125;</span><br><span class="line">&gt; Output:</span><br><span class="line">command-line-arguments</span><br><span class="line">hello, world</span><br></pre></td></tr></table></figure>
+<p>保证打印hello, world，因为，
+第一次 <code>l.Unlock()</code>  <strong>happens before</strong>  第二次 <code>l.Lock()</code> 返回
+第二次 <code>l.Lock()</code> 返回 <strong>happens before</strong>  print(a)</p>
 <blockquote>
-<p>对于任意的<code>l.RLock</code>，存在$k$满足：<br>第 $k$ 次调用 <code>l.Unlock</code> <strong>happens  before</strong> <code>l.RLock</code>；<br>与<code>l.RLock</code>对应的<code>l.RUnlock</code> <strong>happens before</strong> 第 $k+1$次调用 <code>l.Lock</code></p>
+<p>对于任意的<code>l.RLock</code>，存在$k$满足：
+第 $k$ 次调用 <code>l.Unlock</code> <strong>happens  before</strong> <code>l.RLock</code>；<br>
+与<code>l.RLock</code>对应的<code>l.RUnlock</code> <strong>happens before</strong> 第 $k+1$次调用 <code>l.Lock</code></p>
 </blockquote>
-<h4><span id="3-6-once">3.6 Once</span><a href="#3-6-once" class="header-anchor">#</a></h4><p>对某个函数<code>f()</code>，可以有多个线程通过<code>once.Do(f)</code>来对其调用，但仅有线程能够调用执行函数<code>f()</code>，其它的调用会被阻塞知道<code>f()</code>返回。</p>
+<h4><span id="3-6-once">3.6 Once</span><a href="#3-6-once" class="header-anchor">#</a></h4>
+<p>对某个函数<code>f()</code>，可以有多个线程通过<code>once.Do(f)</code>来对其调用，但仅有线程能够调用执行函数<code>f()</code>，其它的调用会被阻塞知道<code>f()</code>返回。</p>
 <p>程序</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"sync"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a <span class="keyword">string</span></span><br><span class="line"><span class="keyword">var</span> once sync.Once</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setup</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	a = <span class="string">"hello, world"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SETUP</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	a = <span class="string">"HELLO, WORLD"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">doprint</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	once.Do(setup) <span class="comment">//注意不要括号</span></span><br><span class="line">	once.Do(SETUP)</span><br><span class="line">	<span class="built_in">print</span>(a, <span class="string">"\n"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">go</span> doprint()</span><br><span class="line">	<span class="keyword">go</span> doprint()</span><br><span class="line">	time.Sleep(time.Second)</span><br><span class="line">&#125;</span><br><span class="line">&gt; Output:</span><br><span class="line">command-line-arguments</span><br><span class="line">hello, world</span><br><span class="line">hello, world</span><br></pre></td></tr></table></figure>
 <p>会打印两次 hello, world，但是仅在第一次调用 doprint 时执行了 setup</p>
-<h3><span id="4-incorrect-synchronization">4. Incorrect synchronization</span><a href="#4-incorrect-synchronization" class="header-anchor">#</a></h3><p>程序</p>
+<h3><span id="4-incorrect-synchronization">4. Incorrect synchronization</span><a href="#4-incorrect-synchronization" class="header-anchor">#</a></h3>
+<p>程序</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a, b <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">f</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	a = <span class="number">1</span></span><br><span class="line">	b = <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">g</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="built_in">print</span>(b, <span class="string">"\n"</span>)</span><br><span class="line">	<span class="built_in">print</span>(a)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">	<span class="keyword">go</span> f()</span><br><span class="line">	g()</span><br><span class="line">&#125;</span><br><span class="line">&gt; Output: <span class="comment">//大多数输出结果</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"></span><br><span class="line">&gt; Output: <span class="comment">//少数输出结果</span></span><br><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
 <p>也可能先打印2，然后打印0</p>
 <p>程序</p>
@@ -278,7 +303,6 @@
 
 
 
-
 3.4 顺序存储结构
 3.6 链式存储结构
 3.11 单链表结构与顺序存储结构
@@ -289,6 +313,7 @@
 4.10 队列
 4.12 循环队列
 6.4 树的存储结构
+
 6.5.2 特殊二叉树
 
 
@@ -314,7 +339,6 @@
 
 
 
-
 在servers上安装 Go 环境
 生成 ifps 节点
 创建共享密钥
@@ -323,8 +347,11 @@
 
 
 
+本例为建立包含三个节点的IPFS私有网络，节点分别为：
+server a: root@45.32.28.71
+server b: root@207.148.109.110
+本地 mac
 
-本例为建立包含三个节点的IPFS私有网络，节点分别为： server a: root@45.32.28.71 server b: root@207.148.109.110本地 mac
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2018-11-04T16:00:00.000Z" class="post-list__meta--date date">2018-11-05</time> &#8226; <span class="post-list__meta--tags tags">
