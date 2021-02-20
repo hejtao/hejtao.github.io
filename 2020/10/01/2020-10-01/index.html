@@ -57,8 +57,10 @@
         <a href="/"><img src="/images/avatar.jpg" width="80" alt="米琴香光 logo" class="panel-cover__logo logo" /></a>
         <h1 class="panel-cover__title panel-title"><a href="/" title="返回封面">米琴香光</a></h1>
         
+        <span class="panel-cover__subtitle panel-subtitle">Some Notes</span>
+        
         <hr class="panel-cover__divider" />
-        <p class="panel-cover__description"></p>
+        <p class="panel-cover__description">完成事物不是为了工作，而是人生最大的享受</p>
         <hr class="panel-cover__divider panel-cover__divider--secondary" />
 
         <div class="navigation-wrapper">
@@ -91,7 +93,7 @@
   <!-- Github -->
   
   <li class="navigation__item">
-    <a href="https://github.com/jiangtaohe" title="查看我的GitHub主页" target="_blank">
+    <a href="https://github.com/hejtao" title="查看我的GitHub主页" target="_blank">
       <i class='social fa fa-github'></i>
       <span class="label">Github</span>
     </a>
@@ -164,8 +166,9 @@
   </header>
 
   <section class="post">
-    <meta name="referrer" content="no-referrer">
+    <p><meta name="referrer" content="no-referrer"></p>
 <div class="toc">
+
 <!-- toc -->
 <ul>
 <li><a href="#an-zhuang-mysql">安装Mysql</a></li>
@@ -173,17 +176,14 @@
 <li><a href="#an-zhuang-nginx">安装Nginx</a></li>
 <li><a href="#an-zhuang-yapi">安装Yapi</a></li>
 <li><a href="#chang-yong-ming-ling">常用命令</a></li>
-<li><a href="#go-fu-wu-bu-shu">Go服务部署</a>
-<ul>
-<li><a href="#using-an-official-image">Using an Official Image</a>
-<ul>
+<li><a href="#go-fu-wu-bu-shu">Go服务部署</a><ul>
+<li><a href="#using-an-official-image">Using an Official Image</a><ul>
 <li><a href="#bian-xie-dockerfile">编写Dockerfile</a></li>
 <li><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu">编写dock.var文件记录镜像的版本参数</a></li>
 <li><a href="#bian-xie-shell-zhi-xing-wen-jian-dockploy-sh">编写shell执行文件dockploy.sh</a></li>
 </ul>
 </li>
-<li><a href="#using-the-scratch-image">Using the Scratch Image</a>
-<ul>
+<li><a href="#using-the-scratch-image">Using the Scratch Image</a><ul>
 <li><a href="#chuang-jian-yi-lai-jing-xiang-my-alpine">创建依赖镜像my-alpine</a></li>
 <li><a href="#bian-xie-dockerfile-wen-jian">编写Dockerfile文件</a></li>
 <li><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu-1">编写dock.var文件记录镜像的版本参数</a></li>
@@ -195,37 +195,22 @@
 </ul>
 <!-- tocstop -->
 </div>
-<h3><span id="an-zhuang-mysql">安装Mysql</span><a href="#an-zhuang-mysql" class="header-anchor">#</a></h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 --name mysql mysq</span><br></pre></td></tr></table></figure>
-<h3><span id="an-zhuang-redis">安装Redis</span><a href="#an-zhuang-redis" class="header-anchor">#</a></h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 6379:6379 --name redis redis</span><br></pre></td></tr></table></figure>
-<h3><span id="an-zhuang-nginx">安装Nginx</span><a href="#an-zhuang-nginx" class="header-anchor">#</a></h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name nginx nginx</span><br></pre></td></tr></table></figure>
-<h3><span id="an-zhuang-yapi">安装Yapi</span><a href="#an-zhuang-yapi" class="header-anchor">#</a></h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name mongo-yapi mongo</span><br><span class="line">docker pull hejtao/yapi</span><br><span class="line">docker run -d \</span><br><span class="line">  --name yapi \</span><br><span class="line">  --link mongo-yapi:mongo \</span><br><span class="line">  --workdir /api/vendors \</span><br><span class="line">  -p 3000:3000 \</span><br><span class="line">  hejtao/yapi \</span><br><span class="line">  server/app.js</span><br></pre></td></tr></table></figure>
-<h3><span id="chang-yong-ming-ling">常用命令</span><a href="#chang-yong-ming-ling" class="header-anchor">#</a></h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">docker search redis</span><br><span class="line">docker pull redis</span><br><span class="line"></span><br><span class="line">docker ps -aq</span><br><span class="line">docker ps -af status=exited  (created|restarting|running|removing|paused|exited|dead)</span><br><span class="line">docker ps -a --format <span class="string">"table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Names&#125;&#125;\t&#123;&#123;.Ports&#125;&#125;\t&#123;&#123;.Status&#125;&#125;"</span>  </span><br><span class="line"></span><br><span class="line">docker start $(docker ps -aqf status=exited)</span><br><span class="line">docker ps -aqf status=exited | xargs docker start</span><br><span class="line">docker stop redis</span><br><span class="line"></span><br><span class="line">docker rm redis</span><br><span class="line"></span><br><span class="line">docker logs redis</span><br><span class="line">docker logs --tail 8 redis</span><br><span class="line">docker logs --since 3s redis</span><br><span class="line">docker port redis</span><br><span class="line"></span><br><span class="line">docker run -it nginx bash</span><br><span class="line">docker run -it --rm linkd:v8 sh</span><br><span class="line">docker <span class="built_in">exec</span> -it nginx bash</span><br><span class="line">docker <span class="built_in">exec</span> -it ee7f1c1c8a49 sh</span><br><span class="line">docker <span class="built_in">exec</span> -it ee7f1c1c8a49 /bin/sh</span><br><span class="line"></span><br><span class="line">docker image tag registry.cn-hangzhou.aliyuncs.com/anoy/yapi ali/anoy/yapi</span><br><span class="line">docker rmi registry.cn-hangzhou.aliyuncs.com/anoy/yapi</span><br><span class="line"></span><br><span class="line">docker inspect mysql | grep -i ipaddress</span><br></pre></td></tr></table></figure>
-<h3><span id="go-fu-wu-bu-shu">Go服务部署</span><a href="#go-fu-wu-bu-shu" class="header-anchor">#</a></h3>
-<h4><span id="using-an-official-image">Using an Official Image</span><a href="#using-an-official-image" class="header-anchor">#</a></h4>
-<h5><span id="bian-xie-dockerfile">编写Dockerfile</span><a href="#bian-xie-dockerfile" class="header-anchor">#</a></h5>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">FROM golang:alpine</span><br><span class="line"></span><br><span class="line">ENV CGO_ENABLED=0</span><br><span class="line">ENV GO111MODULE=on</span><br><span class="line">ENV GOPROXY=https://goproxy.cn</span><br><span class="line"></span><br><span class="line">WORKDIR /root/go/src/app</span><br><span class="line">COPY . .</span><br><span class="line">EXPOSE 6666</span><br><span class="line"></span><br><span class="line">RUN go build -o app</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">"./app"</span>]</span><br></pre></td></tr></table></figure>
-<h5><span id="bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu">编写dock.var文件记录镜像的版本参数</span><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu" class="header-anchor">#</a></h5>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> IMA_TAG_NUM=4</span><br></pre></td></tr></table></figure>
-<h5><span id="bian-xie-shell-zhi-xing-wen-jian-dockploy-sh">编写shell执行文件dockploy.sh</span><a href="#bian-xie-shell-zhi-xing-wen-jian-dockploy-sh" class="header-anchor">#</a></h5>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> dock.var</span><br><span class="line"></span><br><span class="line">docker build -t app_img:v$((IMA_TAG_NUM)) .</span><br><span class="line">docker stop app</span><br><span class="line">docker rm app</span><br><span class="line">docker run --name app -p 8780:8780 -d app_img:v$((IMA_TAG_NUM))</span><br><span class="line">docker rmi app_img:v$((IMA_TAG_NUM-1))</span><br><span class="line"></span><br><span class="line">IMA_TAG_NUM=$((IMA_TAG_NUM+1))</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">export</span> IMA_TAG_NUM=<span class="variable">$&#123;IMA_TAG_NUM&#125;</span>&gt;dock.var</span><br></pre></td></tr></table></figure>
-<h4><span id="using-the-scratch-image">Using the Scratch Image</span><a href="#using-the-scratch-image" class="header-anchor">#</a></h4>
-<h5><span id="chuang-jian-yi-lai-jing-xiang-my-alpine">创建依赖镜像my-alpine</span><a href="#chuang-jian-yi-lai-jing-xiang-my-alpine" class="header-anchor">#</a></h5>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FROM alpine</span><br><span class="line"></span><br><span class="line">RUN apk update</span><br><span class="line">RUN apk --no-cache add tzdata zip ca-certificates   <span class="comment">#安装Go二进制程序的时区、tls认证等依赖组件</span></span><br><span class="line"></span><br><span class="line">WORKDIR /usr/share/zoneinfo</span><br><span class="line">RUN zip -q -r -0 /zoneinfo.zip .</span><br></pre></td></tr></table></figure>
-<p>执行如下命令创建my-alpine镜像</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t my-alpine .</span><br></pre></td></tr></table></figure>
-<h5><span id="bian-xie-dockerfile-wen-jian">编写Dockerfile文件</span><a href="#bian-xie-dockerfile-wen-jian" class="header-anchor">#</a></h5>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM my-alpine</span><br><span class="line">WORKDIR /root/go/src/app</span><br><span class="line">RUN mkdir ./static                  <span class="comment">#项目导出功能临时excel文件的存放目录</span></span><br><span class="line">COPY ./conf ./conf                  <span class="comment">#beego的配置文件</span></span><br><span class="line">COPY ./.env .                       <span class="comment">#项目的环境参数</span></span><br><span class="line">COPY ./app .                        <span class="comment">#编译的Go二进制文件</span></span><br><span class="line">EXPOSE 6666</span><br><span class="line">ENTRYPOINT [<span class="string">"./app"</span>]</span><br></pre></td></tr></table></figure>
+
+<h3><span id="an-zhuang-mysql">安装Mysql</span><a href="#an-zhuang-mysql" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 --name mysql mysq</span><br></pre></td></tr></table></figure>
+<h3><span id="an-zhuang-redis">安装Redis</span><a href="#an-zhuang-redis" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 6379:6379 --name redis redis</span><br></pre></td></tr></table></figure>
+<h3><span id="an-zhuang-nginx">安装Nginx</span><a href="#an-zhuang-nginx" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name nginx nginx</span><br></pre></td></tr></table></figure>
+<h3><span id="an-zhuang-yapi">安装Yapi</span><a href="#an-zhuang-yapi" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name mongo-yapi mongo</span><br><span class="line">docker pull hejtao/yapi</span><br><span class="line">docker run -d \</span><br><span class="line">  --name yapi \</span><br><span class="line">  --link mongo-yapi:mongo \</span><br><span class="line">  --workdir /api/vendors \</span><br><span class="line">  -p 3000:3000 \</span><br><span class="line">  hejtao/yapi \</span><br><span class="line">  server/app.js</span><br></pre></td></tr></table></figure>
+<h3><span id="chang-yong-ming-ling">常用命令</span><a href="#chang-yong-ming-ling" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">docker search redis</span><br><span class="line">docker pull redis</span><br><span class="line"></span><br><span class="line">docker ps -aq</span><br><span class="line">docker ps -af status=exited  (created|restarting|running|removing|paused|exited|dead)</span><br><span class="line">docker ps -a --format <span class="string">"table &#123;&#123;.ID&#125;&#125;\t&#123;&#123;.Names&#125;&#125;\t&#123;&#123;.Ports&#125;&#125;\t&#123;&#123;.Status&#125;&#125;"</span>  </span><br><span class="line"></span><br><span class="line">docker start $(docker ps -aqf status=exited)</span><br><span class="line">docker ps -aqf status=exited | xargs docker start</span><br><span class="line">docker stop redis</span><br><span class="line"></span><br><span class="line">docker rm redis</span><br><span class="line"></span><br><span class="line">docker logs redis</span><br><span class="line">docker logs --tail 8 redis</span><br><span class="line">docker logs --since 3s redis</span><br><span class="line">docker port redis</span><br><span class="line"></span><br><span class="line">docker run -it nginx bash</span><br><span class="line">docker run -it --rm linkd:v8 sh</span><br><span class="line">docker <span class="built_in">exec</span> -it nginx bash</span><br><span class="line">docker <span class="built_in">exec</span> -it ee7f1c1c8a49 sh</span><br><span class="line">docker <span class="built_in">exec</span> -it ee7f1c1c8a49 /bin/sh</span><br><span class="line"></span><br><span class="line">docker image tag registry.cn-hangzhou.aliyuncs.com/anoy/yapi ali/anoy/yapi</span><br><span class="line">docker rmi registry.cn-hangzhou.aliyuncs.com/anoy/yapi</span><br><span class="line"></span><br><span class="line">docker inspect mysql | grep -i ipaddress</span><br></pre></td></tr></table></figure>
+<h3><span id="go-fu-wu-bu-shu">Go服务部署</span><a href="#go-fu-wu-bu-shu" class="header-anchor">#</a></h3><h4><span id="using-an-official-image">Using an Official Image</span><a href="#using-an-official-image" class="header-anchor">#</a></h4><h5><span id="bian-xie-dockerfile">编写Dockerfile</span><a href="#bian-xie-dockerfile" class="header-anchor">#</a></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">FROM golang:alpine</span><br><span class="line"></span><br><span class="line">ENV CGO_ENABLED=0</span><br><span class="line">ENV GO111MODULE=on</span><br><span class="line">ENV GOPROXY=https://goproxy.cn</span><br><span class="line"></span><br><span class="line">WORKDIR /root/go/src/app</span><br><span class="line">COPY . .</span><br><span class="line">EXPOSE 6666</span><br><span class="line"></span><br><span class="line">RUN go build -o app</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">"./app"</span>]</span><br></pre></td></tr></table></figure>
+<h5><span id="bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu">编写dock.var文件记录镜像的版本参数</span><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu" class="header-anchor">#</a></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> IMA_TAG_NUM=4</span><br></pre></td></tr></table></figure>
+<h5><span id="bian-xie-shell-zhi-xing-wen-jian-dockploy-sh">编写shell执行文件dockploy.sh</span><a href="#bian-xie-shell-zhi-xing-wen-jian-dockploy-sh" class="header-anchor">#</a></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> dock.var</span><br><span class="line"></span><br><span class="line">docker build -t app_img:v$((IMA_TAG_NUM)) .</span><br><span class="line">docker stop app</span><br><span class="line">docker rm app</span><br><span class="line">docker run --name app -p 8780:8780 -d app_img:v$((IMA_TAG_NUM))</span><br><span class="line">docker rmi app_img:v$((IMA_TAG_NUM-1))</span><br><span class="line"></span><br><span class="line">IMA_TAG_NUM=$((IMA_TAG_NUM+1))</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">export</span> IMA_TAG_NUM=<span class="variable">$&#123;IMA_TAG_NUM&#125;</span>&gt;dock.var</span><br></pre></td></tr></table></figure>
+<h4><span id="using-the-scratch-image">Using the Scratch Image</span><a href="#using-the-scratch-image" class="header-anchor">#</a></h4><h5><span id="chuang-jian-yi-lai-jing-xiang-my-alpine">创建依赖镜像my-alpine</span><a href="#chuang-jian-yi-lai-jing-xiang-my-alpine" class="header-anchor">#</a></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FROM alpine</span><br><span class="line"></span><br><span class="line">RUN apk update</span><br><span class="line">RUN apk --no-cache add tzdata zip ca-certificates   <span class="comment">#安装Go二进制程序的时区、tls认证等依赖组件</span></span><br><span class="line"></span><br><span class="line">WORKDIR /usr/share/zoneinfo</span><br><span class="line">RUN zip -q -r -0 /zoneinfo.zip .</span><br></pre></td></tr></table></figure>
+<p>执行如下命令创建my-alpine镜像<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t my-alpine .</span><br></pre></td></tr></table></figure></p>
+<h5><span id="bian-xie-dockerfile-wen-jian">编写Dockerfile文件</span><a href="#bian-xie-dockerfile-wen-jian" class="header-anchor">#</a></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM my-alpine</span><br><span class="line">WORKDIR /root/go/src/app</span><br><span class="line">RUN mkdir ./static                  <span class="comment">#项目导出功能临时excel文件的存放目录</span></span><br><span class="line">COPY ./conf ./conf                  <span class="comment">#beego的配置文件</span></span><br><span class="line">COPY ./.env .                       <span class="comment">#项目的环境参数</span></span><br><span class="line">COPY ./app .                        <span class="comment">#编译的Go二进制文件</span></span><br><span class="line">EXPOSE 6666</span><br><span class="line">ENTRYPOINT [<span class="string">"./app"</span>]</span><br></pre></td></tr></table></figure>
 <p>使用scratch镜像（本质上是个空的镜像）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">FROM scratch</span><br><span class="line">ENV ZONEINFO /zoneinfo.zip</span><br><span class="line"><span class="comment">#the timezone data:</span></span><br><span class="line">COPY --from=my-alpine /zoneinfo.zip /</span><br><span class="line"><span class="comment">#the tls certificates:</span></span><br><span class="line">COPY --from=my-alpine /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/</span><br><span class="line"></span><br><span class="line">WORKDIR /root/go/src/app</span><br><span class="line">COPY ./static ./static         <span class="comment">#scratch镜像没有shell，不能使用“RUN mkdir ./static” </span></span><br><span class="line">COPY ./conf ./conf</span><br><span class="line">COPY ./.env .</span><br><span class="line">COPY ./app .</span><br><span class="line">EXPOSE 6666</span><br><span class="line">ENTRYPOINT [<span class="string">"./app"</span>]</span><br></pre></td></tr></table></figure>
-<h5><span id="bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu">编写dock.var文件记录镜像的版本参数</span><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu" class="header-anchor">#</a></h5>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> IMA_TAG_NUM=1</span><br></pre></td></tr></table></figure>
-<h5><span id="bian-xie-shell-zhi-xing-wen-jian-dockploy-sh">编写shell执行文件dockploy.sh</span><a href="#bian-xie-shell-zhi-xing-wen-jian-dockploy-sh" class="header-anchor">#</a></h5>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rm app</span><br><span class="line">CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app</span><br><span class="line"><span class="built_in">source</span> dock.var</span><br><span class="line">docker build -t app:v$((IMA_TAG_NUM)) .</span><br><span class="line">docker stop app</span><br><span class="line">docker rm app</span><br><span class="line">docker run --name app -p 6666:6666 -d app:v$((IMA_TAG_NUM))</span><br><span class="line">docker rmi app:v$((IMA_TAG_NUM-1))</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">export</span> IMA_TAG_NUM=$((IMA_TAG_NUM+1))&gt;dock.var</span><br></pre></td></tr></table></figure>
+<h5><span id="bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu">编写dock.var文件记录镜像的版本参数</span><a href="#bian-xie-dock-var-wen-jian-ji-lu-jing-xiang-de-ban-ben-can-shu" class="header-anchor">#</a></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> IMA_TAG_NUM=1</span><br></pre></td></tr></table></figure>
+<h5><span id="bian-xie-shell-zhi-xing-wen-jian-dockploy-sh">编写shell执行文件dockploy.sh</span><a href="#bian-xie-shell-zhi-xing-wen-jian-dockploy-sh" class="header-anchor">#</a></h5><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rm app</span><br><span class="line">CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app</span><br><span class="line"><span class="built_in">source</span> dock.var</span><br><span class="line">docker build -t app:v$((IMA_TAG_NUM)) .</span><br><span class="line">docker stop app</span><br><span class="line">docker rm app</span><br><span class="line">docker run --name app -p 6666:6666 -d app:v$((IMA_TAG_NUM))</span><br><span class="line">docker rmi app:v$((IMA_TAG_NUM-1))</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">export</span> IMA_TAG_NUM=$((IMA_TAG_NUM+1))&gt;dock.var</span><br></pre></td></tr></table></figure>
   </section>
 
 </article>
@@ -243,6 +228,7 @@
 
 
 
+
 基本命令
 插入模式
 移动光标
@@ -253,15 +239,15 @@
 
 
 
-基本命令#
 
+基本命令#
 i 进入 Insert 模式
 x 删除当前光标所在的字符
 :w 存盘(后面可以跟文件名)
 :q 退出
 :wq 存盘并退出
 dd 删除当前行，并存到剪贴板里
-p 粘贴剪贴
+p 粘贴剪
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2020-10-21T16:00:00.000Z" class="post-list__meta--date date">2020-10-22</time> &#8226; <span class="post-list__meta--tags tags">
@@ -281,21 +267,17 @@ p 粘贴剪贴
 
 
 
+
 相关链接
 Data Lab
 
 
 
-相关链接#
-Introduction to Computer Systems
-Lab Assignments
-Data Lab#
-先看README
-使用下面的命令来检验结果
 
-./dlc bits.c
-./dlc -e bits.c
-./btest  (执行
+相关链接#Introduction to Computer SystemsLab Assignments
+Data Lab#先看README使用下面的命令来检验结果
+
+./dlc bits.c./dlc -e bits.c./btest  (执行这个命令
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2020-08-02T16:00:00.000Z" class="post-list__meta--date date">2020-08-03</time> &#8226; <span class="post-list__meta--tags tags">
@@ -316,7 +298,7 @@ Data Lab#
 
             <footer class="footer">
     <span class="footer__copyright">
-        2020 &copy; Jiang-Tao He - Powered by <a href="https://hexo.io">Hexo</a> with <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> theme originated from <a href="https://github.com/onevcat/vno" target="_blank">onevcat</a>. Hosted by Netlify.
+        2021 &copy; Jiang-Tao He - Powered by <a href="https://hexo.io">Hexo</a> with <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> theme originated from <a href="https://github.com/onevcat/vno" target="_blank">onevcat</a>. Hosted by Netlify.
 
     </span>
     <span class="footer__copyright">
