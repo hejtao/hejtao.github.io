@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>米琴香光</title>
   <icon>https://www.gravatar.com/avatar/0ada4b51ad3a273705846d0117a03f4f</icon>
-  <subtitle>Some Notes</subtitle>
+  <subtitle>Some Notes by hejtao</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://hejtao.netlify.com/"/>
