@@ -183,7 +183,7 @@
 <h4><span id="certbot-geng-xin-yu-ming-zheng-shu">Certbot更新域名证书</span><a href="#certbot-geng-xin-yu-ming-zheng-shu" class="header-anchor">#</a></h4>
 <p>安装certbot <code>apt install certbot</code></p>
 <p>执行<code>renew.sh</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Domain=www.hejtao.com</span><br><span class="line">WebDir=/etc/docker/nginx/www/<span class="variable">$Domain</span></span><br><span class="line">CertDir=/etc/docker/nginx/cert/<span class="variable">$Domain</span></span><br><span class="line"></span><br><span class="line">mkdir <span class="variable">$WebDir</span></span><br><span class="line">mkdir <span class="variable">$CertDir</span></span><br><span class="line"></span><br><span class="line">certbot certonly --webroot -w <span class="variable">$WebDir</span> -d <span class="variable">$Domain</span></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">"$?"</span> = <span class="string">"0"</span> ]; <span class="keyword">then</span></span><br><span class="line">    cp /etc/letsencrypt/live/<span class="variable">$Domain</span>/* <span class="variable">$CertDir</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Domains=(dev.hejtao.com </span><br><span class="line">	test.hejtao.com</span><br><span class="line">	prod.hejtao.com)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> Domain <span class="keyword">in</span> <span class="variable">$&#123;Domains[@]&#125;</span></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	WebDir=/etc/docker/nginx/www/<span class="variable">$Domain</span></span><br><span class="line">	CertDir=/etc/docker/nginx/cert/<span class="variable">$Domain</span></span><br><span class="line"></span><br><span class="line">	mkdir <span class="variable">$WebDir</span></span><br><span class="line">	mkdir <span class="variable">$CertDir</span></span><br><span class="line"></span><br><span class="line">	certbot certonly --webroot -w <span class="variable">$WebDir</span> -d <span class="variable">$Domain</span></span><br><span class="line">	<span class="keyword">if</span> [ <span class="string">"$?"</span> = <span class="string">"0"</span> ]; <span class="keyword">then</span></span><br><span class="line">    		cp /etc/letsencrypt/live/<span class="variable">$Domain</span>/* <span class="variable">$CertDir</span></span><br><span class="line">	<span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br></pre></td></tr></table></figure>
 
   </section>
 
@@ -328,7 +328,10 @@ Dynamical Disco#
 
 
 
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -345,8 +348,5 @@ Dynamical Disco#
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
+<!-- hexo-inject:end --></body>
 </html>
