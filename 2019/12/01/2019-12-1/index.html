@@ -175,6 +175,7 @@
 <li><a href="#wen-jian-yi-dong-fu-zhi">文件移动、复制</a></li>
 <li><a href="#wen-jian-quan-xian">文件权限</a></li>
 <li><a href="#linux-cha-zhao-ming-ling">Linux查找命令</a></li>
+<li><a href="#ying-jian-xin-xi">硬件信息</a></li>
 <li><a href="#qi-ta">其它</a></li>
 </ul>
 </li>
@@ -214,6 +215,9 @@ r=4(可读)，w=2(可写)，x=1(可读写)<br>
 <code>find . -type f -iname &quot;*.php&quot; -exec grep &quot;function&quot; {} +</code><br>
 <code>locate -i hello.txt</code> 查找文件位置，<code>-i</code> 选项忽略大小写<br>
 <code>locate ~/m</code> 搜索用户主目录下，所有以m开头的文件</p>
+<h4><span id="ying-jian-xin-xi">硬件信息</span><a href="#ying-jian-xin-xi" class="header-anchor">#</a></h4>
+<p><code>dmidecode -t memory</code>
+<code>lscpu</code></p>
 <h4><span id="qi-ta">其它</span><a href="#qi-ta" class="header-anchor">#</a></h4>
 <p><code>echo</code> 显示字符串，转义字符，变量；内容定向至文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;echo hello, world! &gt; hello   先清空在写入</span><br><span class="line">&gt;cat hello</span><br><span class="line">hello, world!</span><br><span class="line"></span><br><span class="line">&gt;echo hello, world! &gt;&gt; hello    换行后写入</span><br></pre></td></tr></table></figure>
