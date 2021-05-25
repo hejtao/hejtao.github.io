@@ -166,8 +166,9 @@
   </header>
 
   <section class="post">
-    <meta name="referrer" content="no-referrer">
+    <p><meta name="referrer" content="no-referrer"></p>
 <div class="toc">
+
 <!-- toc -->
 <ul>
 <li><a href="#zai-servers-shang-an-zhuang-go-huan-jing">在servers上安装 Go 环境</a></li>
@@ -178,44 +179,30 @@
 </ul>
 <!-- tocstop -->
 </div>
-<p>本例为建立包含三个节点的IPFS私有网络，节点分别为：
-server a: root@45.32.28.71
-server b: root@207.148.109.110
-本地 mac</p>
-<h3><span id="zai-servers-shang-an-zhuang-go-huan-jing">在servers上安装 Go 环境</span><a href="#zai-servers-shang-an-zhuang-go-huan-jing" class="header-anchor">#</a></h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd ~ </span><br><span class="line">$wget https://dl.google.com/go/go1.11.2.linux-amd64.tar.gz</span><br><span class="line">$tar -C /usr/local -xzf go1.11.2.linux-amd64.tar.gz    //解压到得到的 go 目录，放到 /usr/local 目录下</span><br><span class="line">$vim .bashrc</span><br><span class="line">export GOPATH=~/hejtao/go_projects</span><br><span class="line">export GOROOT=/usr/local/go</span><br><span class="line">export GOBIN=$GOROOT/bin</span><br><span class="line">export PATH=$PATH:$GOBIN</span><br><span class="line">$source .bashrc</span><br><span class="line">$go version </span><br><span class="line">go version go1.11.2 linux/amd64  //安装成功</span><br></pre></td></tr></table></figure>
-<p>mac 上的安装类似。</p>
-<h3><span id="sheng-cheng-ifps-jie-dian">生成 ifps 节点</span><a href="#sheng-cheng-ifps-jie-dian" class="header-anchor">#</a></h3>
-<p>在三台机器上执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$go get -u -d github.com/ipfs/go-ipfs         </span><br><span class="line">$cd $GOPATH/src/github.com/ipfs/go-ipfs</span><br><span class="line">$make install</span><br><span class="line">Command &apos;make&apos; not found, but can be installed with:</span><br><span class="line"></span><br><span class="line">sudo apt install make</span><br><span class="line">sudo apt install make-guile</span><br><span class="line">$apt update        \\ 需要安装 make ， 先检查安装包</span><br><span class="line">...</span><br><span class="line">$apt upgrade        \\ 更新安装包</span><br><span class="line">...</span><br><span class="line">$apt install make      \\ 安装 make</span><br><span class="line">...</span><br><span class="line">$make install</span><br><span class="line">/usr/local/go/pkg/tool/linux_amd64/link: running gcc failed: exec: &quot;gcc&quot;: executable file not found in $PATH</span><br><span class="line"></span><br><span class="line">cmd/ipfs/Rules.mk:37: recipe for target &apos;cmd/ipfs-install&apos; failed</span><br><span class="line">make: *** [cmd/ipfs-install] Error 2</span><br><span class="line"></span><br><span class="line">$apt install gcc</span><br><span class="line">...</span><br><span class="line">$gcc -v</span><br><span class="line">...</span><br><span class="line">gcc version 7.3.0 (Ubuntu 7.3.0-27ubuntu1~18.04)</span><br><span class="line">$make install</span><br><span class="line">...</span><br><span class="line">$ipfs init</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>记下每个节点的ID，比如本例
-server a 的ID: <strong>QmQ9RjTGVDjhZ2kRVx9tjL4CciiKdNrQzknSyUnCMmB3m2</strong>
-server b 的ID: <strong>QmRyxoe9JpkDZuMK4G7PkXUy7nGv8VdM98d6Vr2wxFSa3V</strong>
-mac 的ID: <strong>QmWKKVUy9XqWEGhrikJW8ugHuFzKJJGP5DCGFyvzUJFjzL</strong></p>
-<h3><span id="chuang-jian-gong-xiang-mi-yao">创建共享密钥</span><a href="#chuang-jian-gong-xiang-mi-yao" class="header-anchor">#</a></h3>
-<p>先在任意一台机器上创建密钥，然后拷贝到剩余节点。本例在mac上创建</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$go get -u github.com/Kubuxu/go-ipfs-swarm-key-gen/ipfs-swarm-key-gen</span><br><span class="line">$ipfs-swarm-key-gen &gt; ~/.ipfs/swarm.key</span><br></pre></td></tr></table></figure>
+
+<p>本例为建立包含三个节点的IPFS私有网络，节点分别为：<br> server a: root@45.32.28.71<br> server b: root@207.148.109.110<br>本地 mac</p>
+<h3><span id="zai-servers-shang-an-zhuang-go-huan-jing">在servers上安装 Go 环境</span><a href="#zai-servers-shang-an-zhuang-go-huan-jing" class="header-anchor">#</a></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cd ~ </span><br><span class="line">$wget https://dl.google.com/go/go1.11.2.linux-amd64.tar.gz</span><br><span class="line">$tar -C /usr/local -xzf go1.11.2.linux-amd64.tar.gz    //解压到得到的 go 目录，放到 /usr/local 目录下</span><br><span class="line">$vim .bashrc</span><br><span class="line">export GOPATH=~/hejtao/go_projects</span><br><span class="line">export GOROOT=/usr/local/go</span><br><span class="line">export GOBIN=$GOROOT/bin</span><br><span class="line">export PATH=$PATH:$GOBIN</span><br><span class="line">$source .bashrc</span><br><span class="line">$go version </span><br><span class="line">go version go1.11.2 linux/amd64  //安装成功</span><br></pre></td></tr></table></figure>
+<p> mac 上的安装类似。</p>
+<h3><span id="sheng-cheng-ifps-jie-dian">生成 ifps 节点</span><a href="#sheng-cheng-ifps-jie-dian" class="header-anchor">#</a></h3><p>在三台机器上执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$go get -u -d github.com/ipfs/go-ipfs         </span><br><span class="line">$cd $GOPATH/src/github.com/ipfs/go-ipfs</span><br><span class="line">$make install</span><br><span class="line">Command &apos;make&apos; not found, but can be installed with:</span><br><span class="line"></span><br><span class="line">sudo apt install make</span><br><span class="line">sudo apt install make-guile</span><br><span class="line">$apt update        \\ 需要安装 make ， 先检查安装包</span><br><span class="line">...</span><br><span class="line">$apt upgrade        \\ 更新安装包</span><br><span class="line">...</span><br><span class="line">$apt install make      \\ 安装 make</span><br><span class="line">...</span><br><span class="line">$make install</span><br><span class="line">/usr/local/go/pkg/tool/linux_amd64/link: running gcc failed: exec: &quot;gcc&quot;: executable file not found in $PATH</span><br><span class="line"></span><br><span class="line">cmd/ipfs/Rules.mk:37: recipe for target &apos;cmd/ipfs-install&apos; failed</span><br><span class="line">make: *** [cmd/ipfs-install] Error 2</span><br><span class="line"></span><br><span class="line">$apt install gcc</span><br><span class="line">...</span><br><span class="line">$gcc -v</span><br><span class="line">...</span><br><span class="line">gcc version 7.3.0 (Ubuntu 7.3.0-27ubuntu1~18.04)</span><br><span class="line">$make install</span><br><span class="line">...</span><br><span class="line">$ipfs init</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>记下每个节点的ID，比如本例<br>server a 的ID: <strong>QmQ9RjTGVDjhZ2kRVx9tjL4CciiKdNrQzknSyUnCMmB3m2</strong><br>server b 的ID: <strong>QmRyxoe9JpkDZuMK4G7PkXUy7nGv8VdM98d6Vr2wxFSa3V</strong><br>mac 的ID: <strong>QmWKKVUy9XqWEGhrikJW8ugHuFzKJJGP5DCGFyvzUJFjzL</strong></p>
+<h3><span id="chuang-jian-gong-xiang-mi-yao">创建共享密钥</span><a href="#chuang-jian-gong-xiang-mi-yao" class="header-anchor">#</a></h3><p>先在任意一台机器上创建密钥，然后拷贝到剩余节点。本例在mac上创建<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$go get -u github.com/Kubuxu/go-ipfs-swarm-key-gen/ipfs-swarm-key-gen</span><br><span class="line">$ipfs-swarm-key-gen &gt; ~/.ipfs/swarm.key</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>手动拷贝</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$vim ~/.ipfs/swarm.key        \\ 打开swarm.key, 拷贝内容</span><br></pre></td></tr></table></figure>
-<p>在servers上新建swarm.key</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$vim ~/.ipfs/swarm.key        \\ 将拷贝的内容粘贴</span><br></pre></td></tr></table></figure>
+<p>在servers上新建swarm.key<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$vim ~/.ipfs/swarm.key        \\ 将拷贝的内容粘贴</span><br></pre></td></tr></table></figure></p>
 <ul>
 <li>使用 <code>scp</code> 命令</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$scp ~/.ipfs/swarm.key root@45.32.28.71:~/.ipfs/</span><br><span class="line">$scp ~/.ipfs/swarm.key root@207.148.109.110:~/.ipfs/</span><br></pre></td></tr></table></figure>
-<h3><span id="tian-jia-qi-dong-jie-dian">添加启动节点</span><a href="#tian-jia-qi-dong-jie-dian" class="header-anchor">#</a></h3>
-<p><code>pfs init</code>后的默认启动节点是连接ipfs公网的节点。建立私有网络需要在<strong>每一个节点上</strong>删掉默认启动节点</p>
+<h3><span id="tian-jia-qi-dong-jie-dian">添加启动节点</span><a href="#tian-jia-qi-dong-jie-dian" class="header-anchor">#</a></h3><p><code>pfs init</code>后的默认启动节点是连接ipfs公网的节点。建立私有网络需要在<strong>每一个节点上</strong>删掉默认启动节点</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ipfs bootstrap rm --all</span><br></pre></td></tr></table></figure>
 <p>将网络中任意其他节点作为启动节点。例如将 server a 作为mac的启动节点</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ipfs bootstrap add/ip4/45.32.28.71/tcp/4001/ipfs/QmQ9RjTGVDjhZ2kRVx9tjL4CciiKdNrQzknSyUnCMmB3m2</span><br></pre></td></tr></table></figure>
-<h3><span id="qi-dong-si-you-wang-luo">启动私有网络</span><a href="#qi-dong-si-you-wang-luo" class="header-anchor">#</a></h3>
-<p>给三个节点添加了启动节点后，启动所有节点，便建立起了含有三个节点的IPFS私有网络。分别执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ipfs daemon</span><br></pre></td></tr></table></figure>
+<h3><span id="qi-dong-si-you-wang-luo">启动私有网络</span><a href="#qi-dong-si-you-wang-luo" class="header-anchor">#</a></h3><p>给三个节点添加了启动节点后，启动所有节点，便建立起了含有三个节点的IPFS私有网络。分别执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ipfs daemon</span><br></pre></td></tr></table></figure></p>
 <p>可以使用 <figure class="highlight plain"><figcaption><span>bootstrap list```查看节点所包含的启动节点，使用```ipfs swarm peers```查看节点连接了哪些其他节点。使用```ipfs add file```上传文件到节点，比如给mac节点上传pdf文件，并得到该文件的ID</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">$ipfs add ~/files/GO语言编程.pdf</span><br></pre></td></tr></table></figure></p>
-<p>该文件的ID：<strong>QmRDqZoSMCLMP2GH66MKKnduqgTqKBfqNeysPugp9xadUi</strong>。现在与mac建立了连接的server就可以下载该文件了，在server上执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ipfs get QmRDqZoSMCLMP2GH66MKKnduqgTqKBfqNeysPugp9xadUi        \\在当前目录会多出一个新的文件便是get到的文件</span><br></pre></td></tr></table></figure>
+<p>该文件的ID：<strong>QmRDqZoSMCLMP2GH66MKKnduqgTqKBfqNeysPugp9xadUi</strong>。现在与mac建立了连接的server就可以下载该文件了，在server上执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ipfs get QmRDqZoSMCLMP2GH66MKKnduqgTqKBfqNeysPugp9xadUi        \\在当前目录会多出一个新的文件便是get到的文件</span><br></pre></td></tr></table></figure></p>
+
   </section>
 
 </article>
@@ -233,10 +220,10 @@ mac 的ID: <strong>QmWKKVUy9XqWEGhrikJW8ugHuFzKJJGP5DCGFyvzUJFjzL</strong></p>
 
 
 
+
 1. 什么是 Go内存模型？
 2. Happens Before
 3. Synchronization
-
 3.1 Initialization
 3.2 Goroutine creation
 3.3 Goroutine destruction
@@ -260,18 +247,17 @@ mac 的ID: <strong>QmWKKVUy9XqWEGhrikJW8ugHuFzKJJGP5DCGFyvzUJFjzL</strong></p>
 
 
 
+
 Introduction
 Galois Field
 Galois Field Arithmetic
-
 Addition and Subtraction
 Multiplication and Division
 
 
 RS Code
-
 Coding Matrix Method
-Generator 
+Generator P
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2018-10-18T04:11:11.000Z" class="post-list__meta--date date">2018-10-18</time> &#8226; <span class="post-list__meta--tags tags">
@@ -337,7 +323,10 @@ Generator
 
 
 
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -354,8 +343,5 @@ Generator
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
+<!-- hexo-inject:end --></body>
 </html>
