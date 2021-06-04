@@ -158,14 +158,42 @@
   
     
     <li>
-      <h1 class="post-list__post-title post-title"><a href="/2021/05/24/2021-05-01 copy/" title="link to post.title"></a></h1>
+      <h1 class="post-list__post-title post-title"><a href="/2021/06/04/2021-06-04/" title="link to post.title">Gitlab CICD</a></h1>
       <p class="excerpt">
     
       
-title: Go Cookbookdate: 2021-05-24tags: 
-- Golang
-mathjax: true#
 
+
+
+安装
+
+拉取镜像
+启动runner容器
+注册runner到仓库
+
+
+
+
+
+安装#
+拉取镜像#
+1docker pull gitlab/gitlab-runner:alpine
+启动runner容器#
+1234docker run -d --name gitlab-runner --resta
+    &hellip;
+      </p>
+      <div class="post-list__meta"><time datetime="2021-06-03T16:00:00.000Z" class="post-list__meta--date date">2021-06-04</time> &#8226; <span class="post-list__meta--tags tags"> 
+  <a class="tag-link" href="/tags/gilab-cicd/">gilab cicd</a>
+</span><a class="btn-border-small" href="/2021/06/04/2021-06-04/">阅读全文</a></div>
+      <hr class="post-list__divider" />
+    </li>
+  
+    
+    <li>
+      <h1 class="post-list__post-title post-title"><a href="/2021/05/24/2021-05-24/" title="link to post.title">Go Cookbook</a></h1>
+      <p class="excerpt">
+    
+      
 
 
 
@@ -173,11 +201,17 @@ I/O与文件系统
 
 
 
-
-I/O与文件系统#string  —&amp;gt; io.Readervar b = new(bytes.Buffer)b.Write(ra
+I/O与文件系统#
+string  --&amp;gt; io.Reader
+var b = new(bytes.Buffer)		
+b.Write(rawBytes)	
+bytes.NewBuffer(rawBytes)	
+bytes.NewBufferString(raw
     &hellip;
       </p>
-      <div class="post-list__meta"><time datetime="2021-05-24T09:01:42.130Z" class="post-list__meta--date date">2021-05-24</time> &#8226; <span class="post-list__meta--tags tags"> </span><a class="btn-border-small" href="/2021/05/24/2021-05-01 copy/">阅读全文</a></div>
+      <div class="post-list__meta"><time datetime="2021-05-23T16:00:00.000Z" class="post-list__meta--date date">2021-05-24</time> &#8226; <span class="post-list__meta--tags tags"> 
+  <a class="tag-link" href="/tags/Golang/">Golang</a>
+</span><a class="btn-border-small" href="/2021/05/24/2021-05-24/">阅读全文</a></div>
       <hr class="post-list__divider" />
     </li>
   
@@ -190,14 +224,13 @@ I/O与文件系统#string  —&amp;gt; io.Readervar b = new(bytes.Buffer)b.Write
 
 
 
-
 OpenCV
 Flask
 
 
 
-
-OpenCV#123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657import cv2import
+OpenCV#
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657import cv2import 
     &hellip;
       </p>
       <div class="post-list__meta"><time datetime="2021-04-30T16:00:00.000Z" class="post-list__meta--date date">2021-05-01</time> &#8226; <span class="post-list__meta--tags tags"> 
@@ -214,11 +247,11 @@ OpenCV#1234567891011121314151617181920212223242526272829303132333435363738394041
       
 今天是宝藏男孩的生日😺我写了一首小诗。其中“花园踢树”非我原创却是我最喜欢的一句😍🤞
 
+
 花园踢树，
 船头话愫。
 宝藏男孩，
 细作云图。
-
 
 
 
@@ -244,7 +277,6 @@ OpenCV#1234567891011121314151617181920212223242526272829303132333435363738394041
 
 
 
-
 基本命令
 插入模式
 移动光标
@@ -255,51 +287,20 @@ OpenCV#1234567891011121314151617181920212223242526272829303132333435363738394041
 
 
 
-
 基本命令#
+
 i 进入 Insert 模式
 x 删除当前光标所在的字符
 :w 存盘(后面可以跟文件名)
 :q 退出
 :wq 存盘并退出
 dd 删除当前行，并存到剪贴板里
-p 粘贴剪
+p 粘贴剪贴
     &hellip;
       </p>
       <div class="post-list__meta"><time datetime="2020-10-21T16:00:00.000Z" class="post-list__meta--date date">2020-10-22</time> &#8226; <span class="post-list__meta--tags tags"> 
   <a class="tag-link" href="/tags/vim/">vim</a>
 </span><a class="btn-border-small" href="/2020/10/22/2020-10-22/">阅读全文</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h1 class="post-list__post-title post-title"><a href="/2020/10/01/2020-10-01/" title="link to post.title">Docker Notes</a></h1>
-      <p class="excerpt">
-    
-      
-
-
-
-
-安装Mysql
-安装Redis
-安装Nginx
-安装Yapi
-常用命令
-Go服务部署
-Using an Official Image
-编写Dockerfile
-编写shell执行文件dockploy.sh
-
-
-Using the Scratch Image
-创建依赖镜像hejtao/alp
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2020-09-30T16:00:00.000Z" class="post-list__meta--date date">2020-10-01</time> &#8226; <span class="post-list__meta--tags tags"> 
-  <a class="tag-link" href="/tags/docker/">docker</a>
-</span><a class="btn-border-small" href="/2020/10/01/2020-10-01/">阅读全文</a></div>
       <hr class="post-list__divider" />
     </li>
   
