@@ -44,9 +44,9 @@
     <link href="https://hejtao.netlify.com/2021/05/24/2021-05-24/"/>
     <id>https://hejtao.netlify.com/2021/05/24/2021-05-24/</id>
     <published>2021-05-23T16:00:00.000Z</published>
-    <updated>2021-06-04T14:57:36.912Z</updated>
+    <updated>2021-06-05T20:45:32.231Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><meta name="referrer" content="no-referrer"><div class="toc"><!-- toc --><ul><li><a href="#i-o-yu-wen-jian-xi-tong">I/O与文件系统</a></li></ul><!-- tocstop --></div><h2><span id="i-o-yu-wen-jian-xi-tong">I/O与文件系统</span><a href="#i-o-yu-wen-jian-xi-tong" class="header-anchor">#</a></h2><p>string  --&gt; io.Reader<br>var b = new(bytes.Buffer)b.Write(rawBytes)bytes.NewBuffer(rawBytes)bytes.NewBufferString(rawString)strings.NewReader()</p><p>string  &lt;-- io.Reader<br>ioutil.ReadAll()</p>]]></content>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><meta name="referrer" content="no-referrer"><div class="toc"><!-- toc --><ul><li><a href="#i-o-yu-wen-jian-xi-tong">I/O与文件系统</a></li></ul><!-- tocstop --></div><h3><span id="i-o-yu-wen-jian-xi-tong">I/O与文件系统</span><a href="#i-o-yu-wen-jian-xi-tong" class="header-anchor">#</a></h3><p>string  --&gt; io.Reader<br>var b = new(bytes.Buffer)b.Write(rawBytes)bytes.NewBuffer(rawBytes)bytes.NewBufferString(rawString)strings.NewReader()</p><p>string  &lt;-- io.Reader<br>ioutil.ReadAll()</p>]]></content>
     
     <summary type="html">
     
