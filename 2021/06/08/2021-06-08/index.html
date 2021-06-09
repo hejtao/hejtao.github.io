@@ -4,7 +4,7 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     
-    <title>米琴香光</title>
+    <title>Nginx Health Check on Ubuntu | 米琴香光</title>
     <meta name="renderer" content="webkit">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -15,11 +15,11 @@
     <meta name="description" content="RSS">
 
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="米琴香光">
+    <meta name="twitter:title" content="Nginx Health Check on Ubuntu | 米琴香光">
     <meta name="twitter:description" content="RSS">
 
     <meta property="og:type" content="article">
-    <meta property="og:title" content="米琴香光">
+    <meta property="og:title" content="Nginx Health Check on Ubuntu | 米琴香光">
     <meta property="og:description" content="RSS">
 
     
@@ -37,7 +37,7 @@
     <link rel="alternate" type="application/rss+xml" title="米琴香光" href="/atom.xml">
     
 
-    <link rel="canonical" href="https://hejtao.netlify.com"/>
+    <link rel="canonical" href="https://hejtao.netlify.com/2021/06/08/2021-06-08/"/>
 
               
 <link rel="stylesheet" href="/css/prism.css" type="text/css"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
@@ -49,7 +49,7 @@
         <i class="fa fa-list btn-mobile-menu__icon"></i>
         <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
     </span>
-    <header class="panel-cover " style="background-image: url(/images/background-cover.jpg)">
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
   <div class="panel-main">
     <div class="panel-main__inner panel-inverted">
     <div class="panel-main__content">
@@ -150,44 +150,63 @@
 
     <div class="content-wrapper">
         <div class="content-wrapper__inner">
-            <div class="main-post-list">
+            <article class="post-container post-container--single">
 
-  <ol class="post-list">
-  
-    
-    <li>
-      <h1 class="post-list__post-title post-title"><a href="/2021/06/08/2021-06-08/" title="link to post.title">Nginx Health Check on Ubuntu</a></h1>
-      <p class="excerpt">
-    
-      
-
-
-
-安装依赖包(openssl, pcre, zlib)
-下载 nginx 软件包
-下载 nginx_upstream_check_module
-编译
-启动nginx
-其它问题
-
-
-
-安装依赖包(openssl, pcre, zlib)#
-123apt-get install openssl l
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2021-06-07T16:00:00.000Z" class="post-list__meta--date date">2021-06-08</time> &#8226; <span class="post-list__meta--tags tags"> 
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2021-06-07T16:00:00.000Z" class="post-list__meta--date date">2021-06-08</time> &#8226; <span class="post-meta__tags tags"> 
   <a class="tag-link" href="/tags/health-check/">health-check</a>, <a class="tag-link" href="/tags/nginx/">nginx</a>
-</span><a class="btn-border-small" href="/2021/06/08/2021-06-08/">阅读全文</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
+ </span>
     
-    <li>
-      <h1 class="post-list__post-title post-title"><a href="/2021/06/04/2021-06-04/" title="link to post.title">使用 Gitlab CICD 部署 Golang Projec 到多个服务器</a></h1>
-      <p class="excerpt">
-    
-      
+
+    </div>
+    <h1 class="post-title">Nginx Health Check on Ubuntu</h1>
+  </header>
+
+  <section class="post">
+    <meta name="referrer" content="no-referrer">
+<div class="toc">
+<!-- toc -->
+<ul>
+<li><a href="#an-zhuang-yi-lai-bao-openssl-pcre-zlib">安装依赖包(openssl, pcre, zlib)</a></li>
+<li><a href="#xia-zai-nginx-ruan-jian-bao">下载 nginx 软件包</a></li>
+<li><a href="#xia-zai-nginx-upstream-check-module">下载 nginx_upstream_check_module</a></li>
+<li><a href="#bian-yi">编译</a></li>
+<li><a href="#qi-dong-nginx">启动nginx</a></li>
+<li><a href="#qi-ta-wen-ti">其它问题</a></li>
+</ul>
+<!-- tocstop -->
+</div>
+<h3><span id="an-zhuang-yi-lai-bao-openssl-pcre-zlib">安装依赖包(openssl, pcre, zlib)</span><a href="#an-zhuang-yi-lai-bao-openssl-pcre-zlib" class="header-anchor">#</a></h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt-get install openssl libssl-dev</span><br><span class="line">apt-get install libpcre3 libpcre3-dev</span><br><span class="line">apt-get install zlib1g-dev</span><br></pre></td></tr></table></figure>
+<h3><span id="xia-zai-nginx-ruan-jian-bao">下载 nginx 软件包</span><a href="#xia-zai-nginx-ruan-jian-bao" class="header-anchor">#</a></h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">wget &apos;http://nginx.org/download/nginx-1.16.1.tar.gz&apos;</span><br><span class="line">tar -xzvf nginx-1.16.1.tar.gz</span><br></pre></td></tr></table></figure>
+<h3><span id="xia-zai-nginx-upstream-check-module">下载 nginx_upstream_check_module</span><a href="#xia-zai-nginx-upstream-check-module" class="header-anchor">#</a></h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone git@github.com:yaoweibin/nginx_upstream_check_module.git</span><br></pre></td></tr></table></figure>
+<h3><span id="bian-yi">编译</span><a href="#bian-yi" class="header-anchor">#</a></h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd nginx-1.16.1/</span><br><span class="line">patch -p1 &lt; ../nginx_upstream_check_module/check_1.16.1+.patch</span><br><span class="line"></span><br><span class="line">./configure --add-module=../nginx_upstream_check_module --prefix=/etc/local/nginx --with-http_ssl_module</span><br><span class="line"></span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<h3><span id="qi-dong-nginx">启动nginx</span><a href="#qi-dong-nginx" class="header-anchor">#</a></h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/local/nginx </span><br><span class="line">./sbin/nginx</span><br></pre></td></tr></table></figure>
+<h3><span id="qi-ta-wen-ti">其它问题</span><a href="#qi-ta-wen-ti" class="header-anchor">#</a></h3>
+<p>安装gcc</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">apt install build-essential</span><br><span class="line">apt-get install manpages-dev</span><br><span class="line">gcc --version</span><br></pre></td></tr></table></figure>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+     
+
+        
+
+        
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h3 class="post-list__post-title post-title"><a href="/2021/06/04/2021-06-04/" title="使用 Gitlab CICD 部署 Golang Projec 到多个服务器">使用 Gitlab CICD 部署 Golang Projec 到多个服务器</a></h3>
+                <p class="excerpt">
+                
+                
 
 
 
@@ -207,113 +226,36 @@
 1docker pull gitlab/gitlab-runner:alpine
 启动runner容器#
 
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2021-06-03T16:00:00.000Z" class="post-list__meta--date date">2021-06-04</time> &#8226; <span class="post-list__meta--tags tags"> 
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2021-06-03T16:00:00.000Z" class="post-list__meta--date date">2021-06-04</time> &#8226; <span class="post-list__meta--tags tags">
   <a class="tag-link" href="/tags/gitlab-cicd/">gitlab cicd</a>
 </span><a class="btn-border-small" href="/2021/06/04/2021-06-04/">阅读全文</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h1 class="post-list__post-title post-title"><a href="/2021/05/24/2021-05-24/" title="link to post.title">Go Cookbook</a></h1>
-      <p class="excerpt">
-    
-      
+
+            </div>
+        
+
+   
 
 
-
-I/O与文件系统
-
+</section>
 
 
-I/O与文件系统#
-string  --&amp;gt; io.Reader
-var b = new(bytes.Buffer)		
-b.Write(rawBytes)	
-bytes.NewBuffer(rawBytes)	
-bytes.NewBufferString(raw
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2021-05-23T16:00:00.000Z" class="post-list__meta--date date">2021-05-24</time> &#8226; <span class="post-list__meta--tags tags"> 
-  <a class="tag-link" href="/tags/Golang/">Golang</a>
-</span><a class="btn-border-small" href="/2021/05/24/2021-05-24/">阅读全文</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h1 class="post-list__post-title post-title"><a href="/2021/05/01/2021-05-01/" title="link to post.title">Python</a></h1>
-      <p class="excerpt">
-    
-      
-
-
-
-OpenCV
-Flask
-
-
-
-OpenCV#
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657import cv2import 
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2021-04-30T16:00:00.000Z" class="post-list__meta--date date">2021-05-01</time> &#8226; <span class="post-list__meta--tags tags"> 
-  <a class="tag-link" href="/tags/flask/">flask</a>, <a class="tag-link" href="/tags/opencv/">opencv</a>, <a class="tag-link" href="/tags/python/">python</a>
-</span><a class="btn-border-small" href="/2021/05/01/2021-05-01/">阅读全文</a></div>
-      <hr class="post-list__divider" />
-    </li>
-  
-    
-    <li>
-      <h1 class="post-list__post-title post-title"><a href="/2020/12/16/2020-12-16/" title="link to post.title">宝藏男孩</a></h1>
-      <p class="excerpt">
-    
-      
-今天是宝藏男孩的生日😺我写了一首小诗。其中“花园踢树”非我原创却是我最喜欢的一句😍🤞
-
-
-花园踢树，
-船头话愫。
-宝藏男孩，
-细作云图。
-
-
-
-
-
-
-
-
-    &hellip;
-      </p>
-      <div class="post-list__meta"><time datetime="2020-12-15T16:00:00.000Z" class="post-list__meta--date date">2020-12-16</time> &#8226; <span class="post-list__meta--tags tags"> 
-  <a class="tag-link" href="/tags/小文艺/">小文艺</a>
-</span><a class="btn-border-small" href="/2020/12/16/2020-12-16/">阅读全文</a></div>
-      <hr class="post-list__divider" />
-    </li>
   
 
-  </ol>
-</div>
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        2021 &copy; Jiang-Tao He - Powered by <a href="https://hexo.io">Hexo</a> with <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> theme originated from <a href="https://github.com/onevcat/vno" target="_blank">onevcat</a>. Hosted by Netlify.
+
+    </span>
+    <span class="footer__copyright">
+            
+         </span>
 
 
-  <nav class="pagination" role="navigation">
-    
-    
-    <span class="pagination__page-number" >  1 / 7 </span>
-    
-      <a class="older-posts pagination__older btn btn-small btn-tertiary" href="https://hejtao.netlify.com/page/2/">下页</a>
-    
-    
-      <a class="older-posts pagination__older btn btn-small btn-tertiary" href= "https://hejtao.netlify.com/page/7" >尾页</a>
-    
-
-  </nav>
-
- <script type="text/x-mathjax-config">
+  
+         <script type="text/x-mathjax-config">
     MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
         tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
         TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
@@ -331,19 +273,7 @@ OpenCV#
 </script>
 <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-
-
-            <footer class="footer">
-    <span class="footer__copyright">
-        2021 &copy; Jiang-Tao He - Powered by <a href="https://hexo.io">Hexo</a> with <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> theme originated from <a href="https://github.com/onevcat/vno" target="_blank">onevcat</a>. Hosted by Netlify.
-
-    </span>
-    <span class="footer__copyright">
-            
-         </span>
-
-
-  
+ 
 </footer>
 
 
