@@ -164,9 +164,8 @@
   </header>
 
   <section class="post">
-    <p><meta name="referrer" content="no-referrer"></p>
+    <meta name="referrer" content="no-referrer">
 <div class="toc">
-
 <!-- toc -->
 <ul>
 <li><a href="#ji-ben-ming-ling">基本命令</a></li>
@@ -179,8 +178,8 @@
 </ul>
 <!-- tocstop -->
 </div>
-
-<h3><span id="ji-ben-ming-ling">基本命令</span><a href="#ji-ben-ming-ling" class="header-anchor">#</a></h3><ul>
+<h3><span id="ji-ben-ming-ling">基本命令</span><a href="#ji-ben-ming-ling" class="header-anchor">#</a></h3>
+<ul>
 <li><code>i</code> 进入 Insert 模式</li>
 <li><code>x</code> 删除当前光标所在的字符</li>
 <li><code>:w</code> 存盘(后面可以跟文件名)</li>
@@ -198,13 +197,15 @@
 <li>跳回: 键入 CTRL-T。</li>
 <li>翻页：键入 CTRL-F/B</li>
 </ul>
-<h3><span id="cha-ru-mo-shi">插入模式</span><a href="#cha-ru-mo-shi" class="header-anchor">#</a></h3><ul>
+<h3><span id="cha-ru-mo-shi">插入模式</span><a href="#cha-ru-mo-shi" class="header-anchor">#</a></h3>
+<ul>
 <li><code>a</code> 在光标后插入</li>
 <li><code>o</code> 在当前行后插入一个新行</li>
 <li><code>O</code> 在当前行前插入一个新行</li>
 <li><code>cw</code> 替换从光标所在位置后到一个单词结尾的字符</li>
 </ul>
-<h3><span id="yi-dong-guang-biao">移动光标</span><a href="#yi-dong-guang-biao" class="header-anchor">#</a></h3><ul>
+<h3><span id="yi-dong-guang-biao">移动光标</span><a href="#yi-dong-guang-biao" class="header-anchor">#</a></h3>
+<ul>
 <li><code>0</code> 数字零，到行头</li>
 <li><code>^</code> 到本行第一个不是blank字符的位置</li>
 <li><code>$</code> 到本行行尾</li>
@@ -212,16 +213,19 @@
 <li><code>/pattern</code> 搜索 pattern 的字符串(按n到下一个)</li>
 <li><code>w b</code> 词移动</li>
 </ul>
-<h3><span id="kao-bei-nian-tie">拷贝/粘贴</span><a href="#kao-bei-nian-tie" class="header-anchor">#</a></h3><ul>
+<h3><span id="kao-bei-nian-tie">拷贝/粘贴</span><a href="#kao-bei-nian-tie" class="header-anchor">#</a></h3>
+<ul>
 <li><code>p</code> 在当前位置之后粘贴</li>
 <li><code>P</code> 在当前位置之前粘贴</li>
 <li><code>yy</code> 拷贝当前行，相当于 ddP</li>
 </ul>
-<h3><span id="che-xiao-chong-zuo">撤销/重做</span><a href="#che-xiao-chong-zuo" class="header-anchor">#</a></h3><ul>
+<h3><span id="che-xiao-chong-zuo">撤销/重做</span><a href="#che-xiao-chong-zuo" class="header-anchor">#</a></h3>
+<ul>
 <li><code>u</code> undo</li>
 <li><code>&lt;C-r&gt;</code> redo</li>
 </ul>
-<h3><span id="da-kai-bao-cun-tui-chu-gai-bian-wen-jian-buffer">打开/保存/退出/改变文件(Buffer)</span><a href="#da-kai-bao-cun-tui-chu-gai-bian-wen-jian-buffer" class="header-anchor">#</a></h3><ul>
+<h3><span id="da-kai-bao-cun-tui-chu-gai-bian-wen-jian-buffer">打开/保存/退出/改变文件(Buffer)</span><a href="#da-kai-bao-cun-tui-chu-gai-bian-wen-jian-buffer" class="header-anchor">#</a></h3>
+<ul>
 <li><code>:e &lt;path/to/file&gt;</code> 打开一个文件</li>
 <li><code>:w</code> 存盘</li>
 <li><code>:saveas &lt;path/to/file&gt;</code> 另存为 <code>&lt;path/to/file&gt;</code></li>
@@ -230,7 +234,8 @@
 <li><code>:qa!</code> 强行退出所有文件。</li>
 <li><code>:bn</code> 和 <code>:bp</code> 你可以同时打开很多文件，使用这两个命令来切换下一个或上一个文件。</li>
 </ul>
-<h3><span id="ji-qiao">技巧</span><a href="#ji-qiao" class="header-anchor">#</a></h3><ol>
+<h3><span id="ji-qiao">技巧</span><a href="#ji-qiao" class="header-anchor">#</a></h3>
+<ol>
 <li>打开 Vim之后，可以用 <code>:split filename</code>或 <code>:vsplit filename</code> 或 <code>new filename</code> 横向或纵向切割窗口，使用 <code>ctrl + w</code> 可以在个窗口之间跳转，使用 <code>ctrl + 方向键</code> 可以按照方向切换窗口。</li>
 <li>用 Vim 打开一个文件，如果我们想实现所有文本行翻转，那么可以执行如下命令：<code>:g/^/m 0</code></li>
 <li>在 Vim 中统计文本行数和当前光标的位置，可以使用 <code>ctrl + g</code>，统计字节数，可以使用 <code>g + ctrl + g</code></li>
@@ -238,7 +243,10 @@
 <li>如果你想把当前目录下（包括子文件夹）所有后缀为 java 的文件中的 apache 替换成 eclipse，那么依次执行如下命令： 在当前目录下执行：</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim</span><br><span class="line">:n **/*.java</span><br><span class="line">:argdo %s/apache/eclipse/ge | update</span><br></pre></td></tr></table></figure>
-<p>gg 首行<br>G 末行<br>$ 行末<br>^ 行首</p>
+<p>gg 首行
+G 末行
+$ 行末
+^ 行首</p>
 
   </section>
 
@@ -256,11 +264,11 @@
                 
 今天是宝藏男孩的生日😺我写了一首小诗。其中“花园踢树”非我原创却是我最喜欢的一句😍🤞
 
+
 花园踢树，
 船头话愫。
 宝藏男孩，
 细作云图。
-
 
 
 
@@ -288,7 +296,6 @@
 
 
 
-
 安装Dokcer Engine
 安装Mysql
 安装Redis
@@ -296,13 +303,14 @@
 安装Yapi
 常用命令
 Go服务部署
+
 Using an Official Image
+
 编写Dockerfile
 编写shell执行文件dockploy.sh
 
 
 Using the Scratch Image
-
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2020-09-30T16:00:00.000Z" class="post-list__meta--date date">2020-10-01</time> &#8226; <span class="post-list__meta--tags tags">
@@ -387,7 +395,10 @@ Using the Scratch Image
 
 
 
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -404,8 +415,5 @@ Using the Scratch Image
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end -->
-
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
+<!-- hexo-inject:end --></body>
 </html>
