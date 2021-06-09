@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>SQL Notes | 米琴香光</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="RSS">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SQL Notes | 米琴香光">
+    <meta name="twitter:description" content="RSS">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="SQL Notes | 米琴香光">
+    <meta property="og:description" content="RSS">
+
+    
+    <meta name="author" content="Jiang-Tao He">
+    
+    <link rel="stylesheet" href="/css/vno.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    
+    <link rel="icon" href="/images/icon.jpg">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+    <link rel="alternate" type="application/rss+xml" title="米琴香光" href="/atom.xml">
+    
+
+    <link rel="canonical" href="https://hejtao.netlify.com/2019/09/05/2019-9-5/"/><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+              
+</head>
+
+<body class="home-template no-js">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/"><img src="/images/avatar.jpg" width="80" alt="米琴香光 logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="返回封面">米琴香光</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" class="blog-button">笔记</a></li>
+            
+              <li class="navigation__item"><a href="/archives">归档</a></li>
+            
+              <li class="navigation__item"><a href="/videos">视频</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+  <li class="navigation__item">
+    <a href="https://weibo.com/hjt1993" title="我的微博" target="_blank">
+      <i class='social fa fa-weibo'></i>
+      <span class="label">Weibo</span>
+    </a>
+  </li>
+
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/hejtao" title="查看我的GitHub主页" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  <li class="navigation__item">
+    <a href="https://facebook.com/chiangtaoho" title="上Facebook找我" target="_blank">
+      <i class='social fa fa-facebook'></i>
+      <span class="label">Facebook</span>
+    </a>
+  </li>
+
+
+<!-- Twitter -->
+
+
+
+  <li class="navigation__item">
+    <a href="/atom.xml" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+
+
+  <li class="navigation__item">
+    <a href="mailto:hejtao@outlook.com" title="邮件联系我" target="_blank">
+      <i class='social fa fa-envelope'></i>
+      <span class="label">Email</span>
+    </a>
+  </li>
+
+
+  </ul>
+</nav>
+
+          </div>
+          <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=250 height=86 src="//music.163.com/outchain/player?type=2&id=27538415&auto=0&height=66"></iframe>
+        </div>
+    </div>
+    </div>
+    <div class="panel-cover--overlay cover-blue"></div>
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2019-09-04T16:00:00.000Z" class="post-list__meta--date date">2019-09-05</time> &#8226; <span class="post-meta__tags tags"> 
+  <a class="tag-link" href="/tags/SQL/">SQL</a>
+ </span>
+    
+
+    </div>
+    <h1 class="post-title">SQL Notes</h1>
+  </header>
+
+  <section class="post">
+    <meta name="referrer" content="no-referrer">
+<div class="toc">
+<!-- toc -->
+<ul>
+<li><a href="#lian-biao-cha-xun">联表查询</a></li>
+<li><a href="#zi-fu-ti-huan">字符替换</a></li>
+<li><a href="#zheng-ze-cha-xun">正则查询</a></li>
+<li><a href="#dao-ru-sql-wen-jian">导入SQL文件</a></li>
+<li><a href="#pai-xu">排序</a></li>
+<li><a href="#shi-jian-zhuan-huan">时间转换</a></li>
+<li><a href="#xian-cheng">线程</a></li>
+<li><a href="#chang-yong-ming-ling">常用命令</a></li>
+</ul>
+<!-- tocstop -->
+</div>
+<h4><span id="lian-biao-cha-xun">联表查询</span><a href="#lian-biao-cha-xun" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> library.id, library.name, r.reader_sum, b.book_sum <span class="keyword">FROM</span> </span><br><span class="line"><span class="keyword">library</span> </span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span></span><br><span class="line">( <span class="keyword">SELECT</span> library_id, <span class="keyword">count</span>(*) <span class="keyword">AS</span> reader_sum <span class="keyword">FROM</span> reader <span class="keyword">WHERE</span> library_group_id = <span class="number">10</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> library_id ) <span class="keyword">AS</span> r</span><br><span class="line"><span class="keyword">ON</span> r.library_id = library.id </span><br><span class="line"><span class="keyword">INNER</span> <span class="keyword">JOIN</span></span><br><span class="line">( <span class="keyword">SELECT</span> library_id, <span class="keyword">count</span>( * ) <span class="keyword">AS</span> book_sum <span class="keyword">FROM</span> book <span class="keyword">WHERE</span> library_group_id = <span class="number">10</span> <span class="keyword">GROUP</span> <span class="keyword">BY</span> library_id ) <span class="keyword">AS</span> b</span><br><span class="line"><span class="keyword">ON</span> b.library_id = library.id;</span><br></pre></td></tr></table></figure>
+<h4><span id="zi-fu-ti-huan">字符替换</span><a href="#zi-fu-ti-huan" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">account</span> <span class="keyword">SET</span> grade = <span class="keyword">replace</span>(grade,<span class="string">'級'</span>,<span class="string">'级'</span>);</span><br><span class="line"><span class="keyword">UPDATE</span> reader <span class="keyword">SET</span> <span class="keyword">class</span> = <span class="keyword">REPLACE</span>(<span class="keyword">class</span>,<span class="built_in">CHAR</span>(<span class="number">13</span>),<span class="string">''</span>) <span class="keyword">WHERE</span> library_id = <span class="number">666</span>;</span><br><span class="line">char(9)    水平制表符</span><br><span class="line"></span><br><span class="line">char(10)   换行</span><br><span class="line"></span><br><span class="line">char(13)   回车</span><br></pre></td></tr></table></figure>
+<h4><span id="zheng-ze-cha-xun">正则查询</span><a href="#zheng-ze-cha-xun" class="header-anchor">#</a></h4>
+<p><img src="https://upload-images.jianshu.io/upload_images/1863961-2bcf89b08ee87c02.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">account</span> <span class="keyword">WHERE</span> grade REGEXP <span class="string">'級'</span>; <span class="comment">-- 查询包含</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">name</span> <span class="keyword">FROM</span> person <span class="keyword">WHERE</span> <span class="keyword">name</span> REGEXP <span class="string">'^[aeiou]|ok$'</span>; <span class="comment">-- aeiou开头，或ok结尾</span></span><br></pre></td></tr></table></figure>
+<h4><span id="dao-ru-sql-wen-jian">导入SQL文件</span><a href="#dao-ru-sql-wen-jian" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> @@global.max_allowed_packet = <span class="number">1024</span>*<span class="number">1024</span>*<span class="number">1024</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">SET</span> @@global.sql_mode =<span class="string">'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'</span>;</span><br><span class="line"><span class="keyword">SET</span> @@sql_mode =<span class="string">'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'</span>;</span><br></pre></td></tr></table></figure>
+<h4><span id="pai-xu">排序</span><a href="#pai-xu" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> book <span class="keyword">WHERE</span> library_id = <span class="number">257</span> <span class="keyword">AND</span> (title REGEXP <span class="string">"我"</span> <span class="keyword">OR</span> author REGEXP <span class="string">"我"</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">LOCATE</span>(<span class="string">"我"</span>, <span class="keyword">CONCAT</span>(title, author)), <span class="keyword">LENGTH</span>(title), <span class="keyword">LENGTH</span>(author);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="keyword">table</span> <span class="keyword">WHERE</span> <span class="keyword">id</span> <span class="keyword">IN</span> (<span class="number">3</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">7</span>) <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">field</span>(<span class="keyword">id</span>,<span class="number">3</span>,<span class="number">6</span>,<span class="number">9</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">5</span>,<span class="number">8</span>,<span class="number">7</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span></span><br><span class="line">( <span class="keyword">SELECT</span> isbn13, cn_title, <span class="keyword">count</span>(*) total <span class="keyword">FROM</span> book_info <span class="keyword">WHERE</span> isbn13 != <span class="string">''</span> <span class="keyword">AND</span> <span class="keyword">source</span> <span class="keyword">IN</span> (<span class="string">'yidi'</span>, <span class="string">'guotu'</span>, <span class="string">'douban'</span>, <span class="string">'dangdang'</span>) <span class="keyword">GROUP</span> <span class="keyword">BY</span> isbn13, cn_title ) t1</span><br><span class="line"><span class="keyword">WHERE</span> total &gt; <span class="number">1</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> total <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+<h4><span id="shi-jian-zhuan-huan">时间转换</span><a href="#shi-jian-zhuan-huan" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> <span class="keyword">project</span> <span class="keyword">SET</span> start_time = <span class="keyword">date_format</span>(<span class="keyword">date_add</span>(from_unixtime(<span class="number">0</span>), <span class="built_in">INTERVAL</span> start_time_unix <span class="keyword">SECOND</span>),<span class="string">'%Y-%m-%d'</span>), end_time = <span class="keyword">date_format</span>(<span class="keyword">date_add</span>(from_unixtime(<span class="number">0</span>), <span class="built_in">INTERVAL</span> end_time_unix <span class="keyword">SECOND</span>),<span class="string">'%Y-%m-%d'</span>) <span class="keyword">WHERE</span> start_time = <span class="string">''</span> <span class="keyword">AND</span> end_time = <span class="string">''</span> <span class="keyword">AND</span> start_time_unix &gt; <span class="number">-62135625943</span> <span class="keyword">AND</span> end_time_unix &gt; <span class="number">-62135625943</span>;</span><br></pre></td></tr></table></figure>
+<h4><span id="xian-cheng">线程</span><a href="#xian-cheng" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">FULL</span> <span class="keyword">PROCESSLIST</span>;</span><br><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> information_schema.PROCESSLIST <span class="keyword">WHERE</span> COMMAND != <span class="string">'Sleep'</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="built_in">TIME</span> <span class="keyword">DESC</span>;</span><br></pre></td></tr></table></figure>
+<h4><span id="chang-yong-ming-ling">常用命令</span><a href="#chang-yong-ming-ling" class="header-anchor">#</a></h4>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> hejtao <span class="built_in">CHARACTER</span> <span class="keyword">SET</span> <span class="string">'utf8mb4'</span>;</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">DATABASE</span> hejtao <span class="keyword">COLLATE</span> <span class="string">'utf8mb4_general_ci'</span>;</span><br></pre></td></tr></table></figure>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+     
+
+        
+            <div class="read-more-item">
+                <span class="read-more-item-dim">最近的文章</span>
+                <h3 class="post-list__post-title post-title"><a href="/2019/09/20/2019-9-20/" title="MySQL是怎样运行的：从根儿上理解 MySQL">MySQL是怎样运行的：从根儿上理解 MySQL</a></h3>
+                <p class="excerpt">
+                
+                
+
+
+
+重新认识MySQL
+
+客户端 + 服务器
+启动服务器程序
+
+UNIX
+Windows
+
+
+启动客户端程序
+客户端与服务器的通信
+
+TCP/IP
+命名管道和共享内存
+UNIX域套接字文件
+
+
+服务器处理客户端请求
+存储引擎
+
+
+启动选项和系统变量
+
+在命令行上使用选项
+配置文件中使用选项
+
+W
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-09-19T16:00:00.000Z" class="post-list__meta--date date">2019-09-20</time> &#8226; <span class="post-list__meta--tags tags">
+  <a class="tag-link" href="/tags/MySQL/">MySQL</a>, <a class="tag-link" href="/tags/长文/">长文</a>
+</span><a class="btn-border-small" href="/2019/09/20/2019-9-20/">阅读全文</a></div>
+
+            </div>
+        
+
+        
+            <div class="read-more-item">
+                <span class="read-more-item-dim">更早的文章</span>
+                <h3 class="post-list__post-title post-title"><a href="/2019/04/30/2019-4-30/" title="麻省理工 MapReduce 实验">麻省理工 MapReduce 实验</a></h3>
+                <p class="excerpt">
+                
+                
+
+
+
+MapReduce执行概述
+序言：熟悉源代码
+Part I: Map/Reduce 输入和输出
+Part II: Single-worker单词统计
+Part III: 分布式 MapReduce 任务
+Part IV: worker错误处理
+
+
+
+原文链接
+MapReduce执行概述#
+论
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2019-04-29T16:00:00.000Z" class="post-list__meta--date date">2019-04-30</time> &#8226; <span class="post-list__meta--tags tags">
+  <a class="tag-link" href="/tags/Golang/">Golang</a>, <a class="tag-link" href="/tags/MapReduce/">MapReduce</a>
+</span><a class="btn-border-small" href="/2019/04/30/2019-4-30/">阅读全文</a></div>
+
+            </div>
+        
+
+   
+
+
+</section>
+
+
+  
+
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        2021 &copy; Jiang-Tao He - Powered by <a href="https://hexo.io">Hexo</a> with <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> theme originated from <a href="https://github.com/onevcat/vno" target="_blank">onevcat</a>. Hosted by Netlify.
+
+    </span>
+    <span class="footer__copyright">
+            
+         </span>
+
+
+  
+         <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+    
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+ 
+</footer>
+
+
+<div id="totop" style="position:fixed;bottom:150px;right:20px;cursor: pointer;">
+<a title="返回顶部"><img src="/images/scrollup.png"/></a>
+</div>
+<script src="/js/totop.js"></script>
+
+
+        </div>
+    </div>
+
+     
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-119463453-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?cbff5c9c1c024f714d2c51527df12893";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
+</html>
