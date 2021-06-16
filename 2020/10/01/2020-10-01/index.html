@@ -192,6 +192,7 @@
 </ul>
 </li>
 <li><a href="#docker-swarm">Docker Swarm</a></li>
+<li><a href="#enable-tcp-port-2375-for-external-connection-to-docker">Enable TCP port 2375 for external connection to Docker</a></li>
 </ul>
 <!-- tocstop -->
 </div>
@@ -226,12 +227,33 @@
 <h3><span id="docker-swarm">Docker Swarm</span><a href="#docker-swarm" class="header-anchor">#</a></h3>
 <p>manager 192.168.99.100<br>
 worker 192.168.99.101<br>
-在manager服务器执行
-<code>docker swarm init --advertise-addr 192.168.99.100</code>
-在worker服务器执行
-<code>docker swarm join --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c 192.168.99.100:2377</code>
+在manager服务器执行<br>
+<code>docker swarm init --advertise-addr 192.168.99.100</code><br>
+在worker服务器执行<br>
+<code>docker swarm join --token SWMTKN-1-49nj1cmql0jkz5s954yi3oex3nedyz0fb0xx14ie39trti4wxv-8vxv8rssmk743ojnwacrr2e7c 192.168.99.100:2377</code><br>
 创建服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker service create --replicas 2 \</span><br><span class="line">--publish published=6666,target=6666 \</span><br><span class="line">-p 8800:8800 \</span><br><span class="line">--name hejtao</span><br><span class="line">hejtao</span><br></pre></td></tr></table></figure>
+<h3><span id="enable-tcp-port-2375-for-external-connection-to-docker">Enable TCP port 2375 for external connection to Docker</span><a href="#enable-tcp-port-2375-for-external-connection-to-docker" class="header-anchor">#</a></h3>
+<ul>
+<li>
+<p>Create daemon.json file in /etc/docker:<br>
+{&quot;hosts&quot;: [&quot;tcp://0.0.0.0:2375&quot;, &quot;unix:///var/run/docker.sock&quot;]}</p>
+</li>
+<li>
+<p>Add /etc/systemd/system/docker.service.d/override.conf<br>
+[Service]<br>
+ExecStart=<br>
+ExecStart=/usr/bin/dockerd</p>
+</li>
+<li>
+<p>Reload the systemd daemon:<br>
+systemctl daemon-reload</p>
+</li>
+<li>
+<p>Restart docker:<br>
+systemctl restart docker.service</p>
+</li>
+</ul>
 
   </section>
 
@@ -387,10 +409,7 @@ Data Lab#
 
 
 
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config("");
 </script>
@@ -407,5 +426,8 @@ Data Lab#
 <script type="text/javascript" src="">
 </script>
 <!-- End: Injected MathJax -->
-<!-- hexo-inject:end --></body>
+<!-- hexo-inject:end -->
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
 </html>
