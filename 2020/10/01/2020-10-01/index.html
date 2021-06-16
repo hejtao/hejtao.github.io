@@ -192,7 +192,14 @@
 </ul>
 </li>
 <li><a href="#docker-swarm">Docker Swarm</a></li>
-<li><a href="#enable-tcp-port-2375-for-external-connection-to-docker">Enable TCP port 2375 for external connection to Docker</a></li>
+<li><a href="#enable-tcp-port-2375-for-external-connection-to-docker">Enable TCP port 2375 for external connection to Docker</a>
+<ul>
+<li><a href="#create-daemon-json-file-in-etc-docker">Create daemon.json file in /etc/docker:</a></li>
+<li><a href="#add-etc-systemd-system-docker-service-d-override-conf">Add /etc/systemd/system/docker.service.d/override.conf</a></li>
+<li><a href="#reload-the-systemd-daemon">Reload the systemd daemon:</a></li>
+<li><a href="#restart-docker">Restart docker:</a></li>
+</ul>
+</li>
 </ul>
 <!-- tocstop -->
 </div>
@@ -234,26 +241,16 @@ worker 192.168.99.101<br>
 创建服务</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker service create --replicas 2 \</span><br><span class="line">--publish published=6666,target=6666 \</span><br><span class="line">-p 8800:8800 \</span><br><span class="line">--name hejtao</span><br><span class="line">hejtao</span><br></pre></td></tr></table></figure>
 <h3><span id="enable-tcp-port-2375-for-external-connection-to-docker">Enable TCP port 2375 for external connection to Docker</span><a href="#enable-tcp-port-2375-for-external-connection-to-docker" class="header-anchor">#</a></h3>
-<ul>
-<li>
-<p>Create daemon.json file in /etc/docker:<br>
-{&quot;hosts&quot;: [&quot;tcp://0.0.0.0:2375&quot;, &quot;unix:///var/run/docker.sock&quot;]}</p>
-</li>
-<li>
-<p>Add /etc/systemd/system/docker.service.d/override.conf<br>
-[Service]<br>
+<h4><span id="create-daemon-json-file-in-etc-docker">Create daemon.json file in /etc/docker:</span><a href="#create-daemon-json-file-in-etc-docker" class="header-anchor">#</a></h4>
+<p>{&quot;hosts&quot;: [&quot;tcp://0.0.0.0:2375&quot;, &quot;unix:///var/run/docker.sock&quot;]}</p>
+<h4><span id="add-etc-systemd-system-docker-service-d-override-conf">Add /etc/systemd/system/docker.service.d/override.conf</span><a href="#add-etc-systemd-system-docker-service-d-override-conf" class="header-anchor">#</a></h4>
+<p>[Service]<br>
 ExecStart=<br>
 ExecStart=/usr/bin/dockerd</p>
-</li>
-<li>
-<p>Reload the systemd daemon:<br>
-systemctl daemon-reload</p>
-</li>
-<li>
-<p>Restart docker:<br>
-systemctl restart docker.service</p>
-</li>
-</ul>
+<h4><span id="reload-the-systemd-daemon">Reload the systemd daemon:</span><a href="#reload-the-systemd-daemon" class="header-anchor">#</a></h4>
+<p>systemctl daemon-reload</p>
+<h4><span id="restart-docker">Restart docker:</span><a href="#restart-docker" class="header-anchor">#</a></h4>
+<p>systemctl restart docker.service</p>
 
   </section>
 
