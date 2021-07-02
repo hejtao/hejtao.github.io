@@ -164,8 +164,9 @@
   </header>
 
   <section class="post">
-    <meta name="referrer" content="no-referrer">
+    <p><meta name="referrer" content="no-referrer"></p>
 <div class="toc">
+
 <!-- toc -->
 <ul>
 <li><a href="#sheng-cheng-ben-di-ban-ben-ku-git-wen-jian-jia">生成本地版本库 （.git 文件夹）</a></li>
@@ -176,43 +177,22 @@
 </ul>
 <!-- tocstop -->
 </div>
-<h3><span id="sheng-cheng-ben-di-ban-ben-ku-git-wen-jian-jia">生成本地版本库 （.git 文件夹）</span><a href="#sheng-cheng-ben-di-ban-ben-ku-git-wen-jian-jia" class="header-anchor">#</a></h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"..."</span></span><br></pre></td></tr></table></figure>
-<p>操作如下，
-<br>
-<img src="https://upload-images.jianshu.io/upload_images/1863961-32ad650b5e4944d8.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt="">
-<br>
-<img src="https://upload-images.jianshu.io/upload_images/1863961-4716f9712379e68f.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=""></p>
-<h3><span id="chuang-jian-ssh-key">创建 SSH key</span><a href="#chuang-jian-ssh-key" class="header-anchor">#</a></h3>
-<ul>
-<li>查看 c盘 用户目录是否包含 .ssh 目录。如果包含，打开 id_rsa.pub 文件并复制里面的内容（密钥）
-<br>
-<img src="https://upload-images.jianshu.io/upload_images/1863961-645677c3a3ec906e.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt="">
-<br></li>
+
+<h3><span id="sheng-cheng-ben-di-ban-ben-ku-git-wen-jian-jia">生成本地版本库 （.git 文件夹）</span><a href="#sheng-cheng-ben-di-ban-ben-ku-git-wen-jian-jia" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"..."</span></span><br></pre></td></tr></table></figure>
+<p>操作如下，<br><br><br><img src="https://upload-images.jianshu.io/upload_images/1863961-32ad650b5e4944d8.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=""><br><br><br><img src="https://upload-images.jianshu.io/upload_images/1863961-4716f9712379e68f.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=""></p>
+<h3><span id="chuang-jian-ssh-key">创建 SSH key</span><a href="#chuang-jian-ssh-key" class="header-anchor">#</a></h3><ul>
+<li>查看 c盘 用户目录是否包含 .ssh 目录。如果包含，打开 id_rsa.pub 文件并复制里面的内容（密钥）<br><br><br><img src="https://upload-images.jianshu.io/upload_images/1863961-645677c3a3ec906e.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=""><br><br></li>
 <li>如果不包含 .ssh 目录（上述操作会报错），通过如下命令创建</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa -C <span class="string">"your email address"</span></span><br></pre></td></tr></table></figure>
 <p>其中 C 为大写。然后按照前面的方式复制密钥。</p>
 <ul>
-<li>将密钥添加到 GitHub
-<br>
-<img src="https://upload-images.jianshu.io/upload_images/1863961-fd4c50b7021715b1.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=" ">
-<br>
-<img src="https://upload-images.jianshu.io/upload_images/1863961-fe525f53b369e5cb.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=" ">
-<br>
-<img src="https://upload-images.jianshu.io/upload_images/1863961-a77e329b14352980.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=" "></li>
+<li>将密钥添加到 GitHub<br><br><br><img src="https://upload-images.jianshu.io/upload_images/1863961-fd4c50b7021715b1.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=" "><br><br><br><img src="https://upload-images.jianshu.io/upload_images/1863961-fe525f53b369e5cb.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=" "><br><br><br><img src="https://upload-images.jianshu.io/upload_images/1863961-a77e329b14352980.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=" "></li>
 </ul>
-<h3><span id="chuang-jian-github-cang-ku">创建 GitHub 仓库</span><a href="#chuang-jian-github-cang-ku" class="header-anchor">#</a></h3>
-<br>
-![](https://upload-images.jianshu.io/upload_images/1863961-d05408b0cfc2e198.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650)
-<br>
-![](https://upload-images.jianshu.io/upload_images/1863961-f7edb952c890e069.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650)
-<h3><span id="shang-chuan-dao-github-cang-ku">上传到 GitHub 仓库</span><a href="#shang-chuan-dao-github-cang-ku" class="header-anchor">#</a></h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:jiangtaohe/test.git</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+<h3><span id="chuang-jian-github-cang-ku">创建 GitHub 仓库</span><a href="#chuang-jian-github-cang-ku" class="header-anchor">#</a></h3><p><br><br><img src="https://upload-images.jianshu.io/upload_images/1863961-d05408b0cfc2e198.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=""><br><br><br><img src="https://upload-images.jianshu.io/upload_images/1863961-f7edb952c890e069.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=""></p>
+<h3><span id="shang-chuan-dao-github-cang-ku">上传到 GitHub 仓库</span><a href="#shang-chuan-dao-github-cang-ku" class="header-anchor">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:jiangtaohe/test.git</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
 <p><img src="https://upload-images.jianshu.io/upload_images/1863961-8e43cefe8d940184.PNG?imageMogr2/auto-orient/strip%7CimageView2/2/w/650" alt=""></p>
-<h3><span id="ben-di-xiu-gai-gen-xin-dao-github-cang-ku">本地修改跟新到 GitHub 仓库</span><a href="#ben-di-xiu-gai-gen-xin-dao-github-cang-ku" class="header-anchor">#</a></h3>
-<p>若本地已经关联到仓库，git remote add origin 命令行去掉。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:jiangtaohe/test.git</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"..."</span></span><br><span class="line">git push</span><br><span class="line"></span><br><span class="line">删除</span><br><span class="line">git remote rm origin</span><br></pre></td></tr></table></figure>
+<h3><span id="ben-di-xiu-gai-gen-xin-dao-github-cang-ku">本地修改跟新到 GitHub 仓库</span><a href="#ben-di-xiu-gai-gen-xin-dao-github-cang-ku" class="header-anchor">#</a></h3><p>若本地已经关联到仓库，git remote add origin 命令行去掉。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:jiangtaohe/test.git</span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"..."</span></span><br><span class="line">git push</span><br><span class="line"></span><br><span class="line">删除</span><br><span class="line">git remote rm origin</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">file的修改添加到暂存区</span><br><span class="line">git add file</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">创建新的版本库，并将file在暂存区中的修改添加到新的版本库中·</span><br><span class="line">git commit file -m <span class="string">"备注信息"</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将工作区和暂存区的修改装箱后回到版本库初始状态(相当于撤销所有修改)</span><br><span class="line">git stash</span><br></pre></td></tr></table></figure>
@@ -249,18 +229,16 @@
 
 
 
+
 在Ubuntu安装:
 数据类型:
-
 基本类型：
 聚集类型 (aggregate types)：
-
 数组
 结构
 
 
 引用类型
-
 指针
 切片（slice）
 字典（map）
@@ -271,7 +249,7 @@
 接口类型（interface）：
 
 
-控制流 （for if switch defer g
+控制流 （for if switch defer got
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2018-08-20T05:59:10.000Z" class="post-list__meta--date date">2018-08-20</time> &#8226; <span class="post-list__meta--tags tags">
@@ -288,7 +266,8 @@
                 <p class="excerpt">
                 
                 
-有时人的成长在不知不觉中发生，且不论是生理上的还是心智上的。比如人的身高的变化，对于旁人看来是很大的改变，但对于当事人可能是相当无感的（除非你刻意的去测量，并画出折线图来，很少人会这么做吧）。与前者相比，心智的 变化更加隐蔽，你甚至都不好记录数据作出图表来，但并非一无所知，有些是可以从生活中窥见端
+
+有时人的成长在不知不觉中发生，且不论是生理上的还是心智上的。比如人的身高的变化，对于旁人看来是很大的改变，但对于当事人可能是相当无感的（除非你刻意的去测量，并画出折线图来，很少人会这么做吧）。与前者相比，心智的 变化更加隐蔽，你甚至都不好记录数据作出图表来，但并非一无所知，有些是可以从生活中窥见
                 &hellip;
                 </p>
                 <div class="post-list__meta"><time datetime="2018-07-01T05:54:12.000Z" class="post-list__meta--date date">2018-07-01</time> &#8226; <span class="post-list__meta--tags tags">
@@ -354,8 +333,8 @@
 
 
 
-    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"position":"right","width":140,"height":280,"hOffset":-28,"vOffset":-63},"mobile":{"show":true,"motion":true},"log":false,"tagMode":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body>
 </html>
